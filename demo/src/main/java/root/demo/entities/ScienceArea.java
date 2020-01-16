@@ -1,16 +1,19 @@
 package root.demo.entities;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
 
 @Entity
 public class ScienceArea {
-	
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +22,15 @@ public class ScienceArea {
 	@Column
 	private String name;
 	
+	@ManyToMany(cascade = {
+	        CascadeType.PERSIST,
+	        CascadeType.MERGE
+	    })
+	    @JoinTable(name = "science_area_user",
+	        joinColumns = @JoinColumn(name = "science_area_id"),
+	        inverseJoinColumns = @JoinColumn(name = "user_id")
+	    )
+	private List<User> reviewers;
 
 
 	public ScienceArea() {
@@ -44,6 +56,11 @@ public class ScienceArea {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public List<User> getReviewers() {
+		return reviewers;
+	}
+	public void setReviewers(List<User> reviewers) {
+		this.reviewers = reviewers;
+	}
 	
-
 }

@@ -8,6 +8,7 @@ import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.form.FormField;
+import org.camunda.bpm.engine.form.FormType;
 import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
@@ -22,15 +23,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import root.demo.entities.ScienceArea;
 import root.demo.model.FormFieldsDto;
 import root.demo.model.FormSubmissionDto;
-import root.demo.services.ScienceAreaService;
-import root.demo.services.UserService;
+import root.demo.services.MagazineService;
 
 @Controller
-@RequestMapping("/register")
-public class RegisterController {
+@RequestMapping("/magazine")
+public class NewMagazine {
 	
 	@Autowired
 	IdentityService identityService;
@@ -44,85 +43,34 @@ public class RegisterController {
 
 	@Autowired
 	FormService formService;
-
-
-	@Autowired
-	UserService userService;
 	
 	@Autowired
-	ScienceAreaService scienceAreaService;
-	
+	MagazineService magazineService;
+
 	@GetMapping(path = "/get", produces = "application/json")
-	public @ResponseBody FormFieldsDto get() {
-		System.out.println("pocinje proces registracije");
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("registracijaKorisnika");
+	public @ResponseBody FormFieldsDto startProcess() {
+		System.out.println("pocinje proces kreiranja novog magazina ");
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("NoviCasopis");
 		Task task = taskService.createTaskQuery().processInstanceId(pi.getId()).list().get(0);
+		taskService.claim(task.getId(), "demo");
 		TaskFormData tfd = formService.getTaskFormData(task.getId());
 		List<FormField> properties = tfd.getFormFields();
-		
+		/*	Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String processInstanceId = task.getProcessInstanceId();
+		String user = (String) runtimeService.getVariable(processInstanceId, "username");
+		taskService.claim(taskId, user);*/
 		return new FormFieldsDto(task.getId(), pi.getId(), properties, task.getTaskDefinitionKey());
 	}
-
-	@GetMapping(path = "/activateAccount/{taskId}/{userId}", produces = "application/json")
-	public @ResponseBody ResponseEntity activate(@PathVariable String taskId,@PathVariable Long userId) {
-		userService.activateUserAccount(userId);
-		taskService.complete(taskId);
-		
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-
-
+	
 	@PostMapping(path = "/post/{taskId}", produces = "application/json")
 	public @ResponseBody ResponseEntity post(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
 		HashMap<String, Object> map = this.mapListToDto(dto);
 		try {
 			formService.submitTaskForm(taskId, map);
 			
-			return new ResponseEntity<>(userService.saveUser(map),HttpStatus.OK);
+			return new ResponseEntity<>(magazineService.saveMagazine(map),HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-	}
-
-
-	@GetMapping(path = "/get/{processInstanceId}", produces = "application/json")
-	public @ResponseBody FormFieldsDto getTask(@PathVariable String processInstanceId) {
-		List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
-		if(tasks.size() > 0) {
-		Task task = tasks.get(0);
-		TaskFormData tfd = formService.getTaskFormData(task.getId());
-		List<FormField> properties = tfd.getFormFields();
-		
-		return new FormFieldsDto(task.getId(), processInstanceId, properties, task.getTaskDefinitionKey());
-		}
-		return null;
-		
-	}
-	
-	@PostMapping(path = "/approveReviewer/{taskId}/{userId}", produces = "application/json")
-	public @ResponseBody ResponseEntity approveReviewer(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId,@PathVariable Long userId) {
-		HashMap<String, Object> map = this.mapListToDto(dto);
-		try {
-			userService.approvedReviewer(userId);
-			formService.submitTaskForm(taskId, map);
-			
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-	}
-	@PostMapping(path = "/scienceArea/{taskId}/{userId}", produces = "application/json")
-	public @ResponseBody ResponseEntity scienceArea(@RequestBody List<FormSubmissionDto> dto,
-			@PathVariable String taskId, @PathVariable Long userId) {
-		HashMap<String, Object> map = this.mapListToDto(dto);
-		try {
-			ScienceArea sa = scienceAreaService.saveScienceArea(map);
-			userService.addNewScienceArea(userId, sa);
-			formService.submitTaskForm(taskId, map);
-			
-			return new ResponseEntity<>(HttpStatus.OK);
-			
-		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -134,5 +82,22 @@ public class RegisterController {
 		}
 
 		return map;
+	}
+	
+
+	
+	@GetMapping(path = "/get/{processInstanceId}", produces = "application/json")
+	public @ResponseBody FormFieldsDto getTask(@PathVariable String processInstanceId) {
+		List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+		if(tasks.size() > 0) {
+		Task task = tasks.get(0);
+		TaskFormData tfd = formService.getTaskFormData(task.getId());
+		List<FormField> properties = tfd.getFormFields();
+
+		
+		return new FormFieldsDto(task.getId(), processInstanceId, properties, task.getTaskDefinitionKey());
+		}
+		return null;
+		
 	}
 }

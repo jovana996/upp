@@ -17,6 +17,7 @@ import {Admin} from './guard/admin.guard';
 import {Notauthorized} from './guard/notauthorized.guard';
 import { ActivateAccountComponent } from './activate-account/activate-account.component';
 import { FormFieldsComponent } from './components/form-fields/form-fields.component';
+import { NewMagazineComponent } from './components/new-magazine/new-magazine.component';
 
 const ChildRoutes =
   [
@@ -37,6 +38,11 @@ const Routes = [
     path: "activateAccount",
     component: ActivateAccountComponent,
     canActivate: [Notauthorized]
+  },
+  {
+    path: "newMagazine",
+    component: NewMagazineComponent,
+    canActivate: [Notauthorized]
   }
 ]
 
@@ -45,7 +51,8 @@ const Routes = [
     AppComponent,
     RegistrationComponent,
     ActivateAccountComponent,
-    FormFieldsComponent
+    FormFieldsComponent,
+    NewMagazineComponent
   ],
   imports: [
     BrowserModule,

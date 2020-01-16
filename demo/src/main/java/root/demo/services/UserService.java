@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import root.demo.entities.ScienceArea;
 import root.demo.entities.User;
+import root.demo.enums.Role;
 import root.demo.repositories.UserRepository;
 
 @Service
@@ -27,6 +28,7 @@ public class UserService {
 		user.setPassword(map.get("lozinka").toString());
 		user.setTitle(map.get("titula").toString());
 		user.setReviewer(Boolean.valueOf(map.get("recezent").toString()));
+		user.setRole(Role.USER);
 		User savedUser = userRepository.save(user);
 	
 		if(savedUser != null) {
@@ -48,6 +50,7 @@ public class UserService {
 	}
 	public void approvedReviewer(Long userId) {
 		User u = userRepository.getOne(userId);
+		u.setRole(Role.REVIEWER);
 		u.setApprovedReviewer(true);
 		userRepository.save(u);
 	}

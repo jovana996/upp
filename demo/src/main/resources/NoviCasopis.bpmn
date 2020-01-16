@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_0rnetkn" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.5.0">
+  <bpmn:process id="NoviCasopis" name="NoviCasopis" isExecutable="true" camunda:candidateStarterGroups="urednik">
+    <bpmn:startEvent id="StartEvent_09sm4b2" camunda:initiator="urednikId">
+      <bpmn:outgoing>SequenceFlow_05twhjx</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_05twhjx" sourceRef="StartEvent_09sm4b2" targetRef="newMagazine" />
+    <bpmn:endEvent id="EndEvent_0ocrcbh">
+      <bpmn:incoming>SequenceFlow_0fj2pe1</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1dl85du" sourceRef="newMagazine" targetRef="scienceAreasMagazine" />
+    <bpmn:userTask id="newMagazine" name="Unos podataka o casopisu" camunda:assignee="${urednikId}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="nazivCasopisa" label="Naziv" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="ISSNbroj" label="ISSN broj" type="long">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="brojNaucnihOblasti" label="Broj naucnih oblasti kojima se casopis bavi" type="long">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="naplataClanarineAutori" label="Naplata clanarine autorima" type="long">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="naplataClanarineUrednici" label="Naplata clanarine autorima" type="long" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_05twhjx</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_1kmjknn</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1dl85du</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="scienceAreasMagazine" name="Unos naucnih oblasti" camunda:assignee="${urednikId}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="naucnaOblast" label="Naucna oblast" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="urednikNaucneOblasti" label="Urednik naucne oblasti" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1dl85du</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0yqsvou</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true">
+        <bpmn:loopCardinality xsi:type="bpmn:tFormalExpression">${brojNaucnihOblasti}</bpmn:loopCardinality>
+      </bpmn:multiInstanceLoopCharacteristics>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0yqsvou" sourceRef="scienceAreasMagazine" targetRef="Task_05rm1pe" />
+    <bpmn:scriptTask id="Task_05rm1pe" name="Flag o aktivnosti casopisa" scriptFormat="javascript">
+      <bpmn:incoming>SequenceFlow_0yqsvou</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0ka3rn7</bpmn:outgoing>
+      <bpmn:script>execution.setVariable("aktivan",false);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0ka3rn7" sourceRef="Task_05rm1pe" targetRef="editorAndReviewer" />
+    <bpmn:sequenceFlow id="SequenceFlow_1xg5wl7" sourceRef="editorAndReviewer" targetRef="validateMagazine" />
+    <bpmn:userTask id="editorAndReviewer" name="Unos podataka u recezentima i urednicima" camunda:assignee="${urednikId}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="urednikNaucneOblasti1" label="Urednici naucnih oblasti" type="string" />
+          <camunda:formField id="urednikNaucneOblasti2" type="string" />
+          <camunda:formField id="recezent1" label="Recezenti radova" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="recezent2" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0ka3rn7</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1xg5wl7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="validateMagazine" name="Provera podataka i aktivacija casopisa" camunda:assignee="demo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="nazivCasopisa" label="Naziv" type="string" defaultValue="${nazivCasopisa}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="ISSNbroj" label="ISSN broj" type="long" defaultValue="${ISSNbroj}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="naplataClanarine" label="Nacin naplate clanarine" type="enum" defaultValue="${naplataClanarine}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+            <camunda:value id="autori" name="Autori" />
+            <camunda:value id="citaoci" name="Citaoci" />
+          </camunda:formField>
+          <camunda:formField id="glavniUrednik" label="Glavni urednik" type="string" defaultValue="${urednikId}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="urednikNaucneOblasti1" label="Urednici naucnih oblasti" type="string" defaultValue="${urednikNaucneOblasti1}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="urednikNaucneOblasti2" type="string" defaultValue="${urednikNaucneOblasti2}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="recezent1" label="Recezenti" type="string" defaultValue="${recezent1}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="recezent2" type="string" defaultValue="${recezent2}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="naucnaOblast" label="Naucna oblast" type="string" defaultValue="${naucnaOblast}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="urednikNaucneOblasti" label="Urednik naucne oblasti" type="string" defaultValue="${urednikNaucneOblasti}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="aktivan" label="Postavi casopis kao aktivan" type="boolean" defaultValue="${aktivan}" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1xg5wl7</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0fj2pe1</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1kmjknn</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0fj2pe1" sourceRef="validateMagazine" targetRef="EndEvent_0ocrcbh">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${aktivan}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_1kmjknn" name="Ispravljanje podataka" sourceRef="validateMagazine" targetRef="newMagazine">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!aktivan}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="NoviCasopis">
+      <bpmndi:BPMNShape id="StartEvent_09sm4b2_di" bpmnElement="StartEvent_09sm4b2">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_05twhjx_di" bpmnElement="SequenceFlow_05twhjx">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="250" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0ocrcbh_di" bpmnElement="EndEvent_0ocrcbh">
+        <dc:Bounds x="602" y="452" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1dl85du_di" bpmnElement="SequenceFlow_1dl85du">
+        <di:waypoint x="350" y="120" />
+        <di:waypoint x="400" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1ebvpot_di" bpmnElement="newMagazine">
+        <dc:Bounds x="250" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_0kvivkq_di" bpmnElement="scienceAreasMagazine">
+        <dc:Bounds x="400" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0yqsvou_di" bpmnElement="SequenceFlow_0yqsvou">
+        <di:waypoint x="500" y="120" />
+        <di:waypoint x="570" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ScriptTask_1e096mw_di" bpmnElement="Task_05rm1pe">
+        <dc:Bounds x="570" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0ka3rn7_di" bpmnElement="SequenceFlow_0ka3rn7">
+        <di:waypoint x="620" y="160" />
+        <di:waypoint x="620" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1xg5wl7_di" bpmnElement="SequenceFlow_1xg5wl7">
+        <di:waypoint x="620" y="270" />
+        <di:waypoint x="620" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_15s5r5c_di" bpmnElement="editorAndReviewer">
+        <dc:Bounds x="570" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_0braflq_di" bpmnElement="validateMagazine">
+        <dc:Bounds x="570" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0fj2pe1_di" bpmnElement="SequenceFlow_0fj2pe1">
+        <di:waypoint x="620" y="390" />
+        <di:waypoint x="620" y="452" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1kmjknn_di" bpmnElement="SequenceFlow_1kmjknn">
+        <di:waypoint x="570" y="350" />
+        <di:waypoint x="300" y="350" />
+        <di:waypoint x="300" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="408" y="316" width="56" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

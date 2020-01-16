@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
+
+import root.demo.enums.Role;
 
 
 @Entity
@@ -56,10 +56,11 @@ public class User implements Serializable {
 	private String email;
 	
 	@Column (nullable = true)
-	@OneToMany( cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "reviewers")
 	private List<ScienceArea> sienceAreas;
 	
-	
+	@Column
+	private Role role;
 
 	public User() {
 		super();
@@ -170,6 +171,14 @@ public class User implements Serializable {
 
 	public void setApprovedReviewer(Boolean approvedReviewer) {
 		this.approvedReviewer = approvedReviewer;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 	
 	

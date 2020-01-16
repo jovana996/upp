@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from 'src/app/services/users/user.service';
 import { RepositoryService } from 'src/app/services/repository/repository.service';
+import { MagazineService } from 'src/app/services/magazine.service';
 
 @Component({
   selector: 'app-form-fields',
@@ -20,7 +21,7 @@ export class FormFieldsComponent implements OnInit {
   public taskId ='';
 public userId;
 
-  constructor(private userService: UserService, private repositoryService : RepositoryService) {      
+  constructor(private userService: UserService, private repositoryService : RepositoryService, private magazineService: MagazineService) {      
   
   }
 
@@ -96,7 +97,24 @@ public userId;
             }
           );
           }
-  
+  //newMagazine
+  if(this.callFunction == 'newMagazine'){
+    console.log('call newMagazine ', this.taskId)
+    console.log(o);
+    let x = this.magazineService.newMagazine(o, this.formFieldsDto.taskId);
+
+    x.subscribe(
+      res => {
+        alert("success!")
+        this.getNextTask();
+      },
+      err => {
+        console.log(err);
+        console.log("Error occured");
+      }
+    );
+    }
+
   }
   getNextTask(){
     let x = this.repositoryService.getTask(this.processInstance);
