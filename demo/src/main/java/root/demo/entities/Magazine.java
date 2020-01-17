@@ -1,5 +1,6 @@
 package root.demo.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -49,6 +50,9 @@ public class Magazine {
 
 	public Magazine() {
 		super();
+		this.editorsScienceAreas = new ArrayList();
+		this.scienceAreas = new ArrayList();
+		this.reviewers = new ArrayList();
 	}
 
 	public Long getId() {

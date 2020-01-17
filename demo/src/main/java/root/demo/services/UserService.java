@@ -1,6 +1,7 @@
 package root.demo.services;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,5 +55,17 @@ public class UserService {
 		u.setApprovedReviewer(true);
 		userRepository.save(u);
 	}
+	public User findById(Long userId) {
+	return userRepository.getOne(userId);
+	}
+	public List<User> findByRole(Role role) {
+		return userRepository.findByRole(role);
+		}
 
+	public User update(User user) {
+		
+		return userRepository.save(user);
+	
+		
+	}
 }

@@ -29,5 +29,14 @@ public class MagazineService {
 		}
 		return null;
 	}
-
+	public Magazine getById(Long id) {
+	
+		return magazineRepository.findById(id).orElse(null);
+	
+	}
+	public Magazine saveExistingMagazine(Magazine magazine) {
+		
+		return magazineRepository.save(magazine);
+	
+	}
 }

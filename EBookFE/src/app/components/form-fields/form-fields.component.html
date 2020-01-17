@@ -1,4 +1,36 @@
 <div>
+<div *ngIf = "magazinePreview">
+<b>Naziv casopisa</b>
+{{this.createdMagazine.name}}
+<br/>
+<b>Issn broj</b>
+{{this.createdMagazine.issnnumber}}
+<br/>
+<b>Naplata clanarine za autore</b>
+{{this.createdMagazine.membershipFeeAuthor}}
+<br/>
+<b>Naplata clanarine za citaoce</b>
+{{this.createdMagazine.membershipFeeReader}}
+<br/>
+<b>Naucne oblasti</b>
+<div *ngFor ="let scienceArea of this.createdMagazine.scienceAreas">
+  {{scienceArea}} 
+</div>
+<br/>
+<b>Urednici naucnih oblasti</b>
+<div *ngFor ="let editor of this.createdMagazine.editorsScienceAreas">
+  {{editor}}
+</div>
+<br/>
+<b>Recezenti</b>
+<div *ngFor ="let reviewer of this.createdMagazine.reviewers">
+  {{reviewer}}
+</div>
+
+
+</div>
+
+
   <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" ngNativeValidate>
   
     <div *ngFor="let field of formFields" >
@@ -7,8 +39,8 @@
         <input type="text" name={{field.id}} ngModel  *ngIf="field.type.name=='string'" >
         <input type="checkbox" name={{field.id}} ngModel  *ngIf="field.type.name=='boolean'">
         <input type="number" name={{field.id}} ngModel  *ngIf="field.type.name=='long'" >
-        <select name="field.id" *ngIf="field.type.name=='enum'">
-          <option *ngFor="let val of enumValues" value={{val}}>
+        <select name="{{field.id}}" ngModel *ngIf="field.type.name=='enum'">
+          <option *ngFor="let val of enumValues.get(field.id).values" value={{val}}>
             {{field.type.values[val]}}
           </option>
         </select>

@@ -1,7 +1,9 @@
 package root.demo.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.IdentityService;
@@ -9,6 +11,7 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.form.FormField;
 import org.camunda.bpm.engine.form.TaskFormData;
+import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import root.demo.entities.ScienceArea;
+import root.demo.enums.Role;
 import root.demo.model.FormFieldsDto;
 import root.demo.model.FormSubmissionDto;
 import root.demo.services.ScienceAreaService;
@@ -92,7 +96,38 @@ public class RegisterController {
 		Task task = tasks.get(0);
 		TaskFormData tfd = formService.getTaskFormData(task.getId());
 		List<FormField> properties = tfd.getFormFields();
+		List<root.demo.entities.User> reviewers  = new ArrayList<root.demo.entities.User>();
+		List<root.demo.entities.User> editors  = new ArrayList<root.demo.entities.User>();
 		
+		List<ScienceArea> scienceAreas  = new ArrayList<ScienceArea>();
+		reviewers= userService.findByRole(Role.REVIEWER);
+		editors= userService.findByRole(Role.EDITOR);
+	scienceAreas = scienceAreaService.getAll();
+		
+		if(properties!=null){
+			   for(FormField field : properties){
+			       if( field.getId().equals("urednikNaucneOblasti")){
+			    	   Map<String, String> values = (Map<String, String>) field.getType().getInformation("values");
+			           for(root.demo.entities.User user  :  editors){
+			               values.put(user.getId().toString(),user.getFirstName()+" "+user.getLastName());
+			           }
+			       }
+			       if( field.getId().equals("recezent1") || field.getId().equals("recezent2")){
+			    	   Map<String, String> values = (Map<String, String>) field.getType().getInformation("values");
+			           for(root.demo.entities.User user  :  reviewers){
+			               values.put(user.getId().toString(),user.getFirstName()+" "+user.getLastName());
+			           }
+			       }
+			       
+			       if( field.getId().equals("naucnaOblast")){
+			    	   Map<String, String> values = (Map<String, String>) field.getType().getInformation("values");
+			           for(ScienceArea sc  :  scienceAreas){
+			        	    values.put(sc.getId().toString(), sc.getName());
+			           }
+			       }
+			   }
+
+		}
 		return new FormFieldsDto(task.getId(), processInstanceId, properties, task.getTaskDefinitionKey());
 		}
 		return null;
@@ -116,8 +151,13 @@ public class RegisterController {
 			@PathVariable String taskId, @PathVariable Long userId) {
 		HashMap<String, Object> map = this.mapListToDto(dto);
 		try {
-			ScienceArea sa = scienceAreaService.saveScienceArea(map);
-			userService.addNewScienceArea(userId, sa);
+
+			ScienceArea sa = scienceAreaService.findById(Long.parseLong(map.get("naucnaOblast").toString()));		
+			root.demo.entities.User user = userService.findById(userId);
+			if(!user.getSienceAreas().contains(sa)) {
+			user.getSienceAreas().add(sa);
+			}
+			userService.update(user);
 			formService.submitTaskForm(taskId, map);
 			
 			return new ResponseEntity<>(HttpStatus.OK);

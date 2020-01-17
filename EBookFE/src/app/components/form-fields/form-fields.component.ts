@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from 'src/app/services/users/user.service';
 import { RepositoryService } from 'src/app/services/repository/repository.service';
 import { MagazineService } from 'src/app/services/magazine.service';
+import { EnumValues } from 'src/app/enumValues';
 
 @Component({
   selector: 'app-form-fields',
@@ -17,19 +18,26 @@ export class FormFieldsComponent implements OnInit {
 
   public formFields = [];
   public processInstance = "";
-  public enumValues = [];
+  
+  public enumValues = new Map<string,EnumValues>()
   public taskId ='';
 public userId;
-
-  constructor(private userService: UserService, private repositoryService : RepositoryService, private magazineService: MagazineService) {      
-  
+public magazineId;
+private magazinePreview = false;
+private createdMagazine;
+  constructor(private userService: UserService, private repositoryService : RepositoryService, 
+    private magazineService: MagazineService) {      
+  this.magazinePreview = false;
   }
 
   ngOnInit() {
     this.formFields  = [];
+    this.magazinePreview = false;
   }
 
   onSubmit(value, form){
+    
+    this.magazinePreview = false;
     let o = new Array();
     for (var property in value) {
 
@@ -40,7 +48,6 @@ public userId;
     let x = this.userService.registerUser(o, this.formFieldsDto.taskId);
     x.subscribe(
       res => {
-        console.log('userId? ' + res);
         this.userId = res;
         alert("You registered successfully!")
         this.getNextTask();
@@ -51,11 +58,9 @@ public userId;
     );
     }
     if(this.callFunction == 'activateAccount'){
-      console.log('call activatee ', this.taskId)
       let x = this.userService.activateAccount(this.taskId, this.processInstance, this.userId);
       x.subscribe(
         res => {
-          console.log('call ac' +res);
           alert("success!")
           this.getNextTask();
         },
@@ -66,8 +71,7 @@ public userId;
       );
       }
       if(this.callFunction == 'approveReviewer'){
-        console.log('call approve reviewer ', this.taskId)
-        console.log(o);
+
         let x = this.userService.approveReviewer(o, this.formFieldsDto.taskId, this.userId);
 
         x.subscribe(
@@ -82,8 +86,7 @@ public userId;
         );
         }
         if(this.callFunction == 'enterScienceArea'){
-          console.log('call enterScienceArea ', this.taskId)
-          console.log(o);
+     
           let x = this.userService.enterScienceArea(o, this.formFieldsDto.taskId, this.userId);
   
           x.subscribe(
@@ -97,15 +100,15 @@ public userId;
             }
           );
           }
-  //newMagazine
+ 
   if(this.callFunction == 'newMagazine'){
-    console.log('call newMagazine ', this.taskId)
-    console.log(o);
+
     let x = this.magazineService.newMagazine(o, this.formFieldsDto.taskId);
 
     x.subscribe(
       res => {
         alert("success!")
+        this.magazineId = res;
         this.getNextTask();
       },
       err => {
@@ -115,6 +118,55 @@ public userId;
     );
     }
 
+
+    if(this.callFunction == 'scienceAreasMagazine'){
+   
+      let x = this.magazineService.enterScienceArea(o, this.formFieldsDto.taskId, this.magazineId);
+  
+          x.subscribe(
+            res => {
+              alert("success!")
+              this.getNextTask();
+            },
+            err => {
+              console.log(err);
+              console.log("Error occured");
+            }
+          );
+      }
+      if(this.callFunction == 'addReviewer'){
+
+        let x = this.magazineService.addReviewers(o, this.formFieldsDto.taskId, this.magazineId);
+    
+            x.subscribe(
+              res => {
+                alert("success!")
+                this.getNextTask();
+              },
+              err => {
+                console.log(err);
+                console.log("Error occured");
+              }
+            );
+        }
+
+    if(this.callFunction == 'validateMagazine'){
+   
+      let x = this.magazineService.approveMagazine(this.magazineId, this.formFieldsDto.taskId, o);
+  
+          x.subscribe(
+            res => {
+              alert("success!")
+              this.getNextTask();
+            },
+            err => {
+              console.log(err);
+              console.log("Error occured");
+            }
+          );
+      }
+
+    
   }
   getNextTask(){
     let x = this.repositoryService.getTask(this.processInstance);
@@ -131,9 +183,29 @@ public userId;
         this.taskId = res.taskId;
         this.formFields.forEach( (field) =>{
           if( field.type.name=='enum'){
-            this.enumValues = Object.keys(field.type.values);
+          var enum1 = new EnumValues ;
+          enum1.name = field.id;
+          enum1.values =  Object.keys(field.type.values);
+          this.enumValues.set(field.id, enum1);
           }
         });
+
+        if(this.callFunction == 'validateMagazine'){
+       
+          let x = this.magazineService.validateMagazine(this.magazineId);
+      
+              x.subscribe(
+                res => {
+                  this.createdMagazine = res;
+                  this.magazinePreview = true;
+               
+                },
+                err => {
+                  console.log(err);
+                }
+              );
+          }
+
       }else{
         alert("Process finished")
         

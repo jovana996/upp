@@ -102,10 +102,11 @@
     <bpmn:userTask id="enterScienceArea" name="Unos naucnih oblasti" camunda:assignee="john">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="naucnaOblast" label="Naucna oblast" type="string">
+          <camunda:formField id="naucnaOblast" label="Naucna oblast" type="enum">
             <camunda:validation>
               <camunda:constraint name="required" />
             </camunda:validation>
+            <camunda:value id="none" name="-izaberi--" />
           </camunda:formField>
         </camunda:formData>
       </bpmn:extensionElements>
