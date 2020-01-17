@@ -154,7 +154,10 @@ public class RegisterController {
 
 			ScienceArea sa = scienceAreaService.findById(Long.parseLong(map.get("naucnaOblast").toString()));		
 			root.demo.entities.User user = userService.findById(userId);
-			if(!user.getSienceAreas().contains(sa)) {
+			ScienceArea existingSc = user.getSienceAreas().stream().
+				    filter(s -> s.getId() == sa.getId()).
+				    findFirst().orElse(null);
+			if(existingSc == null) {
 			user.getSienceAreas().add(sa);
 			}
 			userService.update(user);

@@ -3,6 +3,7 @@ package root.demo.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.IdentityService;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import root.demo.entities.Magazine;
 import root.demo.entities.ScienceArea;
+import root.demo.entities.User;
 import root.demo.model.FormFieldsDto;
 import root.demo.model.FormSubmissionDto;
 import root.demo.model.MagazineDTO;
@@ -77,7 +79,6 @@ public class NewMagazineController {
 			formService.submitTaskForm(taskId, map);
 			return new ResponseEntity<>(magazineService.saveMagazine(map),HttpStatus.OK);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -98,12 +99,17 @@ public class NewMagazineController {
 		try {
 			Magazine magazine = magazineService.getById(magazineId);
 			ScienceArea sa = scienceAreaService.findById(Long.parseLong(map.get("naucnaOblast").toString()));
-		
-			root.demo.entities.User user = userService.findById(Long.parseLong(map.get("urednikNaucneOblasti").toString()));
-		if(!magazine.getScienceAreas().contains(sa)) {
+		root.demo.entities.User user = userService.findById(Long.parseLong(map.get("urednikNaucneOblasti").toString()));
+		ScienceArea existingSc = magazine.getScienceAreas().stream().
+			    filter(s -> s.getId() == sa.getId()).
+			    findFirst().orElse(null);
+		User existingE = magazine.getEditorsScienceAreas().stream().
+			    filter(e -> e.getId() == user.getId()).
+			    findFirst().orElse(null);
+		if(existingSc == null) {
 			magazine.getScienceAreas().add(sa);
 			}
-		if(!magazine.getEditorsScienceAreas().contains(user)) {
+		if(existingE == null) {
 			magazine.getEditorsScienceAreas().add(user);
 		}
 			magazineService.saveExistingMagazine(magazine);
@@ -112,7 +118,6 @@ public class NewMagazineController {
 			return new ResponseEntity<>(HttpStatus.OK);
 			
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -125,10 +130,16 @@ public class NewMagazineController {
 			
 			root.demo.entities.User user = userService.findById(Long.parseLong(map.get("recezent1").toString()));
 			root.demo.entities.User user2 = userService.findById(Long.parseLong(map.get("recezent2").toString()));
-			if(!magazine.getReviewers().contains(user)) {
+			User existing1 = magazine.getReviewers().stream().
+				    filter(u -> u.getId() == user.getId()).
+				    findFirst().orElse(null);
+			User existing2 = magazine.getReviewers().stream().
+				    filter(u -> u.getId() == user2.getId()).
+				    findFirst().orElse(null);
+			if(existing1 == null) {
 				magazine.getReviewers().add(user);
 			}
-			if(!magazine.getReviewers().contains(user2)) {
+			if(existing2 == null) {
 				magazine.getReviewers().add(user2);
 			}
 			magazineService.saveExistingMagazine(magazine);
