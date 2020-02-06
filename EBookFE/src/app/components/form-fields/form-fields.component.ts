@@ -21,10 +21,11 @@ export class FormFieldsComponent implements OnInit {
   
   public enumValues = new Map<string,EnumValues>()
   public taskId ='';
-public userId;
-public magazineId;
-private magazinePreview = false;
-private createdMagazine;
+  public userId;
+  public magazineId;
+  private magazinePreview = false;
+  private createdMagazine;
+  
   constructor(private userService: UserService, private repositoryService : RepositoryService, 
     private magazineService: MagazineService) {      
   this.magazinePreview = false;

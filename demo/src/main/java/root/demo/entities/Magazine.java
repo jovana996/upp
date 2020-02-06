@@ -31,10 +31,7 @@ public class Magazine {
 	private List<ScienceArea> scienceAreas;
 	
 	@Column
-	private Long  membershipFeeAuthor;
-	
-	@Column
-	private Long  membershipFeeReader;
+	private Boolean  openAccess;
 	
 	@Column
 	private User editor;
@@ -87,20 +84,13 @@ public class Magazine {
 		this.scienceAreas = scienceAreas;
 	}
 
-	public Long getMembershipFeeAuthor() {
-		return membershipFeeAuthor;
+
+	public Boolean getOpenAccess() {
+		return openAccess;
 	}
 
-	public void setMembershipFeeAuthor(Long membershipFeeAuthor) {
-		this.membershipFeeAuthor = membershipFeeAuthor;
-	}
-
-	public Long getMembershipFeeReader() {
-		return membershipFeeReader;
-	}
-
-	public void setMembershipFeeReader(Long membershipFeeReader) {
-		this.membershipFeeReader = membershipFeeReader;
+	public void setOpenAccess(Boolean openAccess) {
+		this.openAccess = openAccess;
 	}
 
 	public User getEditor() {

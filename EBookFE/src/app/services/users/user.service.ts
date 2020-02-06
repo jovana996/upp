@@ -27,4 +27,7 @@ export class UserService {
   enterScienceArea(scienceArea, taskId, userId) {
     return this.httpClient.post("http://localhost:8080/register/scienceArea/".concat(taskId).concat("/").concat(userId), scienceArea) as Observable<any>;
   }
+  login(form) {
+    return this.httpClient.post("http://localhost:8080/auth/login/", form) as Observable<any>;
+  }
 }

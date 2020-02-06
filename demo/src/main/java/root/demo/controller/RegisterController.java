@@ -80,8 +80,7 @@ public class RegisterController {
 	public @ResponseBody ResponseEntity post(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
 		HashMap<String, Object> map = this.mapListToDto(dto);
 		try {
-			formService.submitTaskForm(taskId, map);
-			
+			formService.submitTaskForm(taskId, map);			
 			return new ResponseEntity<>(userService.saveUser(map),HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

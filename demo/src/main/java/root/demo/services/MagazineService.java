@@ -20,8 +20,7 @@ public class MagazineService {
 		Magazine magazine = new Magazine();
 		magazine.setActive(false);
 		magazine.setISSNNumber(Long.parseLong(map.get("ISSNbroj").toString()));
-		magazine.setMembershipFeeAuthor(Long.parseLong(map.get("naplataClanarineAutori").toString()));
-		magazine.setMembershipFeeReader(Long.parseLong(map.get("naplataClanarineUrednici").toString()));
+		magazine.setOpenAccess(Boolean.parseBoolean(map.get("openAccess").toString()));
 		magazine.setName(map.get("nazivCasopisa").toString());
 		Magazine savedMagazine = magazineRepository.save(magazine);
 		if(savedMagazine != null) {

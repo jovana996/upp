@@ -20,12 +20,8 @@ public class MagazineDTO {
 	private List<String> scienceAreas = new ArrayList<String>();
 	
 
-	private Long  membershipFeeAuthor;
+	private Boolean  openAccess;
 	
-
-	private Long  membershipFeeReader;
-	
-
 	private String editor;
 	
 	private List<String> editorsScienceAreas = new ArrayList<String>();
@@ -44,8 +40,7 @@ public class MagazineDTO {
 	this.id = magazine.getId();
 	this.name= magazine.getName();
 	this.ISSNNumber = magazine.getISSNNumber();
-	this.membershipFeeAuthor = magazine.getMembershipFeeAuthor();
-	this.membershipFeeReader = magazine.getMembershipFeeReader();
+	this.openAccess = magazine.getOpenAccess();
 	for(User user : magazine.getEditorsScienceAreas()) {
 		String editor = user.getFirstName() + " " + user.getLastName();
 		this.editorsScienceAreas.add(editor);
@@ -99,23 +94,14 @@ public class MagazineDTO {
 	}
 
 
-	public Long getMembershipFeeAuthor() {
-		return membershipFeeAuthor;
+
+	public Boolean getOpenAccess() {
+		return openAccess;
 	}
 
 
-	public void setMembershipFeeAuthor(Long membershipFeeAuthor) {
-		this.membershipFeeAuthor = membershipFeeAuthor;
-	}
-
-
-	public Long getMembershipFeeReader() {
-		return membershipFeeReader;
-	}
-
-
-	public void setMembershipFeeReader(Long membershipFeeReader) {
-		this.membershipFeeReader = membershipFeeReader;
+	public void setOpenAccess(Boolean openAccess) {
+		this.openAccess = openAccess;
 	}
 
 

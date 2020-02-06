@@ -3,6 +3,7 @@ package root.demo.services;
 import java.util.HashMap;
 import java.util.List;
 
+import org.camunda.bpm.engine.IdentityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 	
+	@Autowired
+	IdentityService identityService;
 	
 	public Long saveUser(HashMap<String, Object> map) {
 		User user = new User();
@@ -31,7 +34,15 @@ public class UserService {
 		user.setReviewer(Boolean.valueOf(map.get("recezent").toString()));
 		user.setRole(Role.USER);
 		User savedUser = userRepository.save(user);
-	
+		
+		org.camunda.bpm.engine.identity.User camundaUser = identityService.newUser(savedUser.getUsername());
+		
+		camundaUser.setEmail(savedUser.getEmail());
+		camundaUser.setFirstName(savedUser.getFirstName());
+		camundaUser.setLastName(savedUser.getLastName());
+		camundaUser.setPassword(savedUser.getPassword());
+		identityService.saveUser(camundaUser);
+		
 		if(savedUser != null) {
 		return savedUser.getId();
 		}
@@ -63,9 +74,9 @@ public class UserService {
 		}
 
 	public User update(User user) {
-		
 		return userRepository.save(user);
-	
-		
 	}
+	public User findByUsernanmeAndPassword(String username, String password) {
+		return userRepository.findByUsernameAndPassword(username, password);
+		}
 }

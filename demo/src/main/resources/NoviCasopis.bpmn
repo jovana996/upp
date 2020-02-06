@@ -27,12 +27,11 @@
               <camunda:constraint name="required" />
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="naplataClanarineAutori" label="Naplata clanarine autorima" type="long">
+          <camunda:formField id="openAccess" label="Naplata clanarine " type="boolean">
             <camunda:validation>
               <camunda:constraint name="required" />
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="naplataClanarineUrednici" label="Naplata clanarine autorima" type="long" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_05twhjx</bpmn:incoming>

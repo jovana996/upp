@@ -8,6 +8,7 @@ export class Authorized implements CanActivate {
 
   canActivate() {
     if(localStorage.user){
+      console.log(JSON.parse(localStorage.user))
       return true;
     }else{
       return false;

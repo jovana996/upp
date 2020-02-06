@@ -18,6 +18,8 @@ import {Notauthorized} from './guard/notauthorized.guard';
 import { ActivateAccountComponent } from './activate-account/activate-account.component';
 import { FormFieldsComponent } from './components/form-fields/form-fields.component';
 import { NewMagazineComponent } from './components/new-magazine/new-magazine.component';
+import { LoginComponent } from './components/login/login.component';
+import { ObradaTekstaComponent } from './components/obrada-teksta/obrada-teksta.component';
 
 const ChildRoutes =
   [
@@ -37,11 +39,21 @@ const Routes = [
   {
     path: "activateAccount",
     component: ActivateAccountComponent,
-    canActivate: [Notauthorized]
+    canActivate: [Authorized]
   },
   {
     path: "newMagazine",
     component: NewMagazineComponent,
+    canActivate: [Authorized]
+  },
+  {
+    path: "text",
+    component: ObradaTekstaComponent,
+    canActivate: [Authorized]
+  },
+  {
+    path: "login",
+    component: LoginComponent,
     canActivate: [Notauthorized]
   }
 ]
@@ -52,7 +64,9 @@ const Routes = [
     RegistrationComponent,
     ActivateAccountComponent,
     FormFieldsComponent,
-    NewMagazineComponent
+    NewMagazineComponent,
+    LoginComponent,
+    ObradaTekstaComponent
   ],
   imports: [
     BrowserModule,
