@@ -5,7 +5,7 @@
       <bpmn:outgoing>SequenceFlow_1px31x5</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1px31x5" sourceRef="StartEvent_1" targetRef="chooseMagazine" />
-    <bpmn:userTask id="chooseMagazine" name="odabir casopisa za objavu rada" camunda:assignee="${autorId}">
+    <bpmn:userTask id="chooseMagazine" name="odabir casopisa za objavu rada">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="casopis" label="Casopis za objavu rada" type="string" />
@@ -25,7 +25,7 @@
     <bpmn:sequenceFlow id="SequenceFlow_0nirq0k" name="ne placa se clanarina" sourceRef="ExclusiveGateway_09cjzga" targetRef="enterPaperData">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${openAccess}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="enterPaperData" name="unos podataka o radu" camunda:assignee="peter">
+    <bpmn:userTask id="enterPaperData" name="unos podataka o radu">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="naslov" label="Naslov" type="string">
@@ -57,24 +57,12 @@
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_1q8gwjt" sourceRef="enterPaperData" targetRef="Task_1ehmmc3" />
     <bpmn:sequenceFlow id="SequenceFlow_0dwn52q" sourceRef="Task_0qd5q84" targetRef="editorReviewingPaperData" />
-    <bpmn:userTask id="editorReviewingPaperData" name="glavni urednik - obrada rada" camunda:assignee="${glavniUrednik}">
+    <bpmn:userTask id="editorReviewingPaperData" name="glavni urednik - obrada rada">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="naslov" label="Naslov" type="string" defaultValue="${naslov}">
-            <camunda:validation>
-              <camunda:constraint name="readonly" />
-            </camunda:validation>
-          </camunda:formField>
-          <camunda:formField id="apstrakt" label="Apstrakt" type="string" defaultValue="${apstrakt}">
-            <camunda:validation>
-              <camunda:constraint name="readonly" />
-            </camunda:validation>
-          </camunda:formField>
-          <camunda:formField id="kljucniPojmovi" label="Kljucni pojmovi" type="string" defaultValue="${kljucniPojmovi}">
-            <camunda:validation>
-              <camunda:constraint name="readonly" />
-            </camunda:validation>
-          </camunda:formField>
+          <camunda:formField id="naslov" label="Naslov" type="string" defaultValue="${naslov}" />
+          <camunda:formField id="apstrakt" label="Apstrakt" type="string" defaultValue="${apstrakt}" />
+          <camunda:formField id="kljucniPojmovi" label="Kljucni pojmovi" type="string" defaultValue="${kljucniPojmovi}" />
           <camunda:formField id="radRelevantan" label="Da li je rad relevantan za naucnu oblast?" type="boolean" defaultValue="false" />
         </camunda:formData>
         <camunda:taskListener class="root.demo.handlers.EditorReviewingPaperDataHandler" event="complete" />
@@ -98,14 +86,10 @@
       <bpmn:incoming>SequenceFlow_0x8365x</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0x8365x" sourceRef="Task_07wnxcu" targetRef="EndEvent_1b6oqp4" />
-    <bpmn:userTask id="editorReviewingPaper" name="pregled rada" camunda:assignee="${glavniUrednik}">
+    <bpmn:userTask id="editorReviewingPaper" name="pregled rada">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="naucniRad" type="string" defaultValue="${naucniRad}">
-            <camunda:validation>
-              <camunda:constraint name="readonly" />
-            </camunda:validation>
-          </camunda:formField>
+          <camunda:formField id="naucniRad" type="string" defaultValue="${naucniRad}" />
           <camunda:formField id="radDobroFormatiran" label="Da li je rad formatiran u skladu sa zahtevima?" type="boolean" defaultValue="false" />
           <camunda:formField id="komentarUrednika" label="Komentar" type="string" />
         </camunda:formData>
@@ -130,16 +114,8 @@
     <bpmn:userTask id="viewCommentsAndEdit" name="pregled prijave i komentara autora i izmena prijave" camunda:assignee="peter">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="komUrednika" label="Komentar urednika" type="string" defaultValue="${komentarUrednika}">
-            <camunda:validation>
-              <camunda:constraint name="readonly" />
-            </camunda:validation>
-          </camunda:formField>
-          <camunda:formField id="naucniRad" label="Naucni rad" type="string" defaultValue="${naucniRad}">
-            <camunda:validation>
-              <camunda:constraint name="required" />
-            </camunda:validation>
-          </camunda:formField>
+          <camunda:formField id="komUrednika" label="Komentar urednika" type="string" defaultValue="${komentarUrednika}" />
+          <camunda:formField id="naucniRad" label="Naucni rad" type="string" defaultValue="${naucniRad}" />
         </camunda:formData>
         <camunda:taskListener class="root.demo.handlers.ViewCommentsAndEditHandler" event="complete" />
       </bpmn:extensionElements>
@@ -148,7 +124,7 @@
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_1hhepr9" sourceRef="viewCommentsAndEdit" targetRef="Task_0qd5q84" />
     <bpmn:sequenceFlow id="SequenceFlow_08p8mms" sourceRef="Task_0tukeea" targetRef="choosePaperEditors" />
-    <bpmn:userTask id="choosePaperEditors" name="izbor recezenata" camunda:assignee="${urednikNO}">
+    <bpmn:userTask id="choosePaperEditors" name="izbor recezenata">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="recezent1" label="Recezent1" type="string">
@@ -169,14 +145,10 @@
       <bpmn:outgoing>SequenceFlow_0xwas47</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_0xwas47" sourceRef="choosePaperEditors" targetRef="Task_0bokpb4" />
-    <bpmn:userTask id="saveReview" name="citanje rada, unos komentara i preporuke" camunda:assignee="${recezent}">
+    <bpmn:userTask id="saveReview" name="citanje rada, unos komentara i preporuke">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="naucniRad" label="Naucni rad" type="string" defaultValue="${naucniRad}">
-            <camunda:validation>
-              <camunda:constraint name="readonly" />
-            </camunda:validation>
-          </camunda:formField>
+          <camunda:formField id="naucniRad" label="Naucni rad" type="string" defaultValue="${naucniRad}" />
           <camunda:formField id="komentarAutoru" label="Komentar autoru" type="string" />
           <camunda:formField id="preporuka" label="Preporuka o objavljivanju rada" type="enum">
             <camunda:value id="p1" name="Prihvatiti" />
@@ -194,19 +166,11 @@
       <bpmn:multiInstanceLoopCharacteristics camunda:collection="${listaRecezenata}" camunda:elementVariable="recezent" />
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_1wh9n9c" sourceRef="saveReview" targetRef="analyzingReviews" />
-    <bpmn:userTask id="analyzingReviews" name="urednik analizira recenzije" camunda:assignee="${urednikNO}">
+    <bpmn:userTask id="analyzingReviews" name="urednik analizira recenzije">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="kometarUrednicima" label="Komentari recezenta" type="string" defaultValue="${kometarUrednicima}">
-            <camunda:validation>
-              <camunda:constraint name="readonly" />
-            </camunda:validation>
-          </camunda:formField>
-          <camunda:formField id="kometarAutoru" label="Komentar autoru" type="string" defaultValue="${komentarAutoru}">
-            <camunda:validation>
-              <camunda:constraint name="readonly" />
-            </camunda:validation>
-          </camunda:formField>
+          <camunda:formField id="kometarUrednicima" label="Komentari recezenta" type="string" defaultValue="${kometarUrednicima}" />
+          <camunda:formField id="kometarAutoru" label="Komentar autoru" type="string" defaultValue="${komentarAutoru}" />
           <camunda:formField id="preporuka" label="Preporuka" type="enum" defaultValue="${preporuka}">
             <camunda:value id="p1" name="Prihvatiti" />
             <camunda:value id="p2" name="Prihvatiti uz manje ispravke" />
@@ -233,14 +197,10 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${odluka=="p2" || odluka=="p3" }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_10eb318" sourceRef="Task_1mb2wwc" targetRef="previewComments" />
-    <bpmn:userTask id="previewComments" name="pregled komentara " camunda:assignee="peter">
+    <bpmn:userTask id="previewComments" name="pregled komentara ">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="komentar" label="Komentari recezenta" type="string" defaultValue="${komentarAutoru}">
-            <camunda:validation>
-              <camunda:constraint name="readonly" />
-            </camunda:validation>
-          </camunda:formField>
+          <camunda:formField id="komentar" label="Komentari recezenta" type="string" defaultValue="${komentarAutoru}" />
         </camunda:formData>
         <camunda:taskListener delegateExpression="root.demo.handlers.PreviewCommentsHandler" event="complete" />
       </bpmn:extensionElements>
@@ -280,11 +240,7 @@
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="naucniRad" label="Naucni rad" type="string" defaultValue="${naucniRad}" />
-          <camunda:formField id="opisIzmena" label="Opis izmena" type="string" defaultValue="${opisIzmena}">
-            <camunda:validation>
-              <camunda:constraint name="readonly" />
-            </camunda:validation>
-          </camunda:formField>
+          <camunda:formField id="opisIzmena" label="Opis izmena" type="string" defaultValue="${opisIzmena}" />
           <camunda:formField id="odluka2" label="Odluka" type="enum">
             <camunda:value id="prihvati" name="Prihvati rad" />
             <camunda:value id="odbij" name="Vrati na doradu" />
@@ -337,7 +293,7 @@
     <bpmn:sequenceFlow id="SequenceFlow_07vi4ag" sourceRef="IntermediateThrowEvent_11k5qsh" targetRef="Task_10o7zg2" />
     <bpmn:sequenceFlow id="SequenceFlow_180ecmp" sourceRef="Task_0bokpb4" targetRef="saveReview" />
     <bpmn:sequenceFlow id="SequenceFlow_099luk7" sourceRef="ScriptTask_0wgqqka" targetRef="saveReview" />
-    <bpmn:userTask id="editorDecision" name="odluka urednika" camunda:assignee="${urednikNO}">
+    <bpmn:userTask id="editorDecision" name="odluka urednika">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="odluka" label="Odluka o objavi rada" type="enum">
