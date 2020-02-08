@@ -166,8 +166,33 @@ export class FormFieldsComponent implements OnInit {
             }
           );
       }
-
+      if(this.callFunction == 'chooseMagazine' ||
+      this.callFunction == 'enterPaperData' ||
+      this.callFunction == 'editorReviewingPaperData'||
+      this.callFunction == 'editorReviewingPaper' ||
+      this.callFunction == 'viewCommentsAndEdit' ||
+      this.callFunction == 'choosePaperEditors' ||
+      this.callFunction == 'analyzingReviews'||
+      this.callFunction == 'editorDecision' ||
+      this.callFunction == 'previewComments' ||
+      this.callFunction == 'previewCommentsAndResponseAuthor' ||
+      this.callFunction == 'saveReview'  || 
+      this.callFunction ==  "previewCommentsAndResponseEditor"){
+   
+        let x = this.magazineService.chooseMagazine(this.formFieldsDto.taskId, o);
     
+            x.subscribe(
+              res => {
+                alert("success!")
+                this.getNextTask();
+              },
+              err => {
+                console.log(err);
+                console.log("Error occured");
+              }
+            );
+        }
+
   }
   getNextTask(){
     let x = this.repositoryService.getTask(this.processInstance);

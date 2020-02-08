@@ -49,7 +49,7 @@
     <bpmn:sequenceFlow id="SequenceFlow_0ido5nn" sourceRef="ExclusiveGateway_0e5kbh3" targetRef="EndEvent_10qux83">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${clanarina==false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:serviceTask id="ScriptTask_1ttzdx9" name="postavljanje promenljive za aktivnu clanarinu">
+    <bpmn:serviceTask id="ScriptTask_1ttzdx9" name="postavljanje promenljive za aktivnu clanarinu" camunda:class="root.demo.handlers.CheckIsMagazineOpenAccessHandler">
       <bpmn:incoming>SequenceFlow_0qng182</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_18sf4qq</bpmn:outgoing>
     </bpmn:serviceTask>

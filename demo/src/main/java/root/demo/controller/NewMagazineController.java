@@ -177,6 +177,18 @@ public class NewMagazineController {
 		}
 	}
 	
+	@PostMapping(path = "/chooseMagazine/{taskId}", produces = "application/json")
+	public @ResponseBody ResponseEntity chooseMagazine(@RequestBody List<FormSubmissionDto> dto,
+			@PathVariable String taskId) {
+		HashMap<String, Object> map = this.mapListToDto(dto);
+		try {
+			formService.submitTaskForm(taskId, map);
+			return new ResponseEntity<>(HttpStatus.OK);
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 	
 }

@@ -12,7 +12,7 @@ public class CheckIsMagazineOpenAccessHandler implements JavaDelegate {
 	public void execute(DelegateExecution execution) throws Exception {
 		
 		execution.setVariable("openAccess", true);
-		System.out.println("validacija podataka");
+		System.out.println("CheckIsMagazineOpenAccessHandler");
 	}
 
 }

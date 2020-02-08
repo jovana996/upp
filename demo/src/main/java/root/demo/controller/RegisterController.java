@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.IdentityService;
@@ -90,6 +91,7 @@ public class RegisterController {
 
 	@GetMapping(path = "/get/{processInstanceId}", produces = "application/json")
 	public @ResponseBody FormFieldsDto getTask(@PathVariable String processInstanceId) {
+	
 		List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
 		if(tasks.size() > 0) {
 		Task task = tasks.get(0);
@@ -101,7 +103,7 @@ public class RegisterController {
 		List<ScienceArea> scienceAreas  = new ArrayList<ScienceArea>();
 		reviewers= userService.findByRole(Role.REVIEWER);
 		editors= userService.findByRole(Role.EDITOR);
-	scienceAreas = scienceAreaService.getAll();
+		scienceAreas = scienceAreaService.getAll();
 		
 		if(properties!=null){
 			   for(FormField field : properties){

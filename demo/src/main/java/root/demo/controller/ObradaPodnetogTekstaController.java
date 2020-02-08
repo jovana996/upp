@@ -51,7 +51,6 @@ public class ObradaPodnetogTekstaController {
 		System.out.println("pocinje proces obrade podnetog texta ");
 		ProcessInstance pi = runtimeService.startProcessInstanceByKey("obradaPodnetogTeksta");
 		Task task = taskService.createTaskQuery().processInstanceId(pi.getId()).list().get(0);
-		//taskService.claim(task.getId(), "demo");
 		TaskFormData tfd = formService.getTaskFormData(task.getId());
 		List<FormField> properties = tfd.getFormFields();
 

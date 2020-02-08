@@ -2,7 +2,6 @@ package root.demo.controller;
 
 
 import org.camunda.bpm.engine.IdentityService;
-import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,9 +23,6 @@ public class AuthController {
 	@Autowired
 	IdentityService identityService;
 	
-	@Autowired
-	private RuntimeService runtimeService;
-
 	@Autowired
 	UserService userService;
 	
