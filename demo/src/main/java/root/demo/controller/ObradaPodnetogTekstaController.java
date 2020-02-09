@@ -37,11 +37,6 @@ public class ObradaPodnetogTekstaController {
 	@Autowired
 	FormService formService;
 	
-	@Autowired
-	MagazineService magazineService;
-
-	@Autowired
-	ScienceAreaService scienceAreaService;
 	
 	@Autowired
 	UserService userService;

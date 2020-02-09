@@ -1,5 +1,6 @@
 package root.demo.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import javax.persistence.OneToMany;
 
 
 @Entity
-public class Magazine {
+public class Magazine implements Serializable {
 
 	@Id
 	@Column

@@ -1,13 +1,12 @@
 package root.demo.services;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import root.demo.entities.Magazine;
-import root.demo.entities.User;
-import root.demo.enums.Role;
 import root.demo.repositories.MagazineRepository;
 
 @Service
@@ -36,6 +35,11 @@ public class MagazineService {
 	public Magazine saveExistingMagazine(Magazine magazine) {
 		
 		return magazineRepository.save(magazine);
+	
+	}
+	public List<Magazine> getAll() {
+		
+		return magazineRepository.findAll();
 	
 	}
 }

@@ -25,17 +25,6 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private userService : UserService, private repositoryService : RepositoryService) {
     
-  /*  let x = repositoryService.startProcess();
-    x.subscribe(
-      res => {
-        console.log(res);
-        //this.categories = res;
-        this.formFieldsDto = res;
-      },
-      err => {
-        console.log("Error occured");
-      }
-    );*/
    }
 
   ngOnInit() {
@@ -61,80 +50,5 @@ loadData(){
         }
       })
 }
-  /*onSubmit(value, form){
-    let o = new Array();
-    for (var property in value) {
-      console.log(property);
-      console.log(value[property]);
-      o.push({fieldId : property, fieldValue : value[property]});
-    }
-
-    console.log(o);
-    let x = this.userService.registerUser(o, this.formFieldsDto.taskId);
-
-    x.subscribe(
-      res => {
-        console.log(res);
-        
-        alert("You registered successfully!")
-        this.getNextTask();
-      },
-      err => {
-        console.log("Error occured");
-      }
-    );
-  }
-
-  getTasks(){
-    let x = this.repositoryService.getTasks(this.processInstance);
-
-    x.subscribe(
-      res => {
-        console.log(res);
-        this.tasks = res;
-      },
-      err => {
-        console.log("Error occured");
-      }
-    );
-   }
-
-   getNextTask(){
-    let x = this.repositoryService.getTask(this.processInstance);
-
   
-    x.subscribe(
-      res => {
-        console.log(res);
-        //this.categories = res;
-        this.formFieldsDto = res;
-        this.formFields = res.formFields;
-        this.processInstance = res.processInstanceId;
-        this.formFields.forEach( (field) =>{
-          
-          if( field.type.name=='enum'){
-            this.enumValues = Object.keys(field.type.values);
-          }
-        });
-      },
-      err => {
-        console.log("Error occured");
-      }
-    );
-   }
-
-   complete(taskId){
-    let x = this.repositoryService.completeTask(taskId);
-
-    x.subscribe(
-      res => {
-        console.log(res);
-        this.tasks = res;
-      },
-      err => {
-        console.log("Error occured");
-      }
-    );
-   }
-*/
 }

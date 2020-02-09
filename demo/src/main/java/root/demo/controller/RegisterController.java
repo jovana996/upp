@@ -26,10 +26,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import root.demo.entities.Magazine;
 import root.demo.entities.ScienceArea;
 import root.demo.enums.Role;
 import root.demo.model.FormFieldsDto;
 import root.demo.model.FormSubmissionDto;
+import root.demo.services.MagazineService;
 import root.demo.services.ScienceAreaService;
 import root.demo.services.UserService;
 
@@ -56,6 +58,9 @@ public class RegisterController {
 	
 	@Autowired
 	ScienceAreaService scienceAreaService;
+
+	@Autowired
+	MagazineService magazineService;
 	
 	@GetMapping(path = "/get", produces = "application/json")
 	public @ResponseBody FormFieldsDto get() {
@@ -101,10 +106,11 @@ public class RegisterController {
 		List<root.demo.entities.User> editors  = new ArrayList<root.demo.entities.User>();
 		
 		List<ScienceArea> scienceAreas  = new ArrayList<ScienceArea>();
+		List<Magazine> magazines  = new ArrayList<Magazine>();
 		reviewers= userService.findByRole(Role.REVIEWER);
 		editors= userService.findByRole(Role.EDITOR);
 		scienceAreas = scienceAreaService.getAll();
-		
+		magazines = magazineService.getAll();
 		if(properties!=null){
 			   for(FormField field : properties){
 			       if( field.getId().equals("urednikNaucneOblasti")){
@@ -117,13 +123,6 @@ public class RegisterController {
 			    	   Map<String, String> values = (Map<String, String>) field.getType().getInformation("values");
 			           for(root.demo.entities.User user  :  reviewers){
 			               values.put(user.getId().toString(),user.getFirstName()+" "+user.getLastName());
-			           }
-			       }
-			       
-			       if( field.getId().equals("naucnaOblast")){
-			    	   Map<String, String> values = (Map<String, String>) field.getType().getInformation("values");
-			           for(ScienceArea sc  :  scienceAreas){
-			        	    values.put(sc.getId().toString(), sc.getName());
 			           }
 			       }
 			   }
