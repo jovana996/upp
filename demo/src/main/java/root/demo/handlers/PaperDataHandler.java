@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import root.demo.entities.Magazine;
 import root.demo.entities.Paper;
 import root.demo.entities.ScienceArea;
+import root.demo.services.PaperService;
 import root.demo.services.ScienceAreaService;
 
 @Service
@@ -17,6 +18,9 @@ public class PaperDataHandler implements TaskListener {
 
 	@Autowired
 	RuntimeService runtimeService;
+
+	@Autowired
+	PaperService paperService;
 
 	@Autowired
 	ScienceAreaService scienceAreaService;
@@ -32,15 +36,14 @@ public class PaperDataHandler implements TaskListener {
 		String paperAbstract = runtimeService.getVariable(execution.getId(), "naslov").toString();
 		String scienceArea = runtimeService.getVariable(execution.getId(), "naucnaOblast").toString();
 		String paperText = runtimeService.getVariable(execution.getId(), "naucniRad").toString();
-
 		ScienceArea sa = scienceAreaService.findById(Long.parseLong(scienceArea));
 		Paper paper = new Paper(title, coAuthorName, coAuthorEmail, coAuthorAddress, keyWords, paperAbstract, sa, paperText);
-		
-		execution.setVariable("paper", paper);
+		Paper savedPaper = paperService.save(paper);
+		execution.setVariable("paper", savedPaper.getId());
 		execution.setVariable("scienceAreaPaper", sa);
-		System.out.println("paper " + paper.getTitle());
 
 		System.out.println(sa);
+		System.out.println(paper);
 		System.out.println("PaperDataHandler");
 
 	}

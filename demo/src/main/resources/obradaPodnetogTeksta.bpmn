@@ -212,12 +212,12 @@
     <bpmn:userTask id="previewCommentsAndResponseAuthor" name="ispravka rada i odgovor na komentare">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="naucniRad" label="Naucni rad" type="string" defaultValue="${naucniRad}" />
+          <camunda:formField id="naucniRad" label="Naucni rad" type="string" />
           <camunda:formField id="odgovorNaKomentare" label="Odgovor na komentare" type="string" />
           <camunda:formField id="opisIzmena" label="Opis izmena u radu" type="string" />
           <camunda:formField id="komentar" label="Komentar" type="string" defaultValue="${komentarAutoru}" />
         </camunda:formData>
-        <camunda:taskListener class="root.demo.handlers.PaperDataHandler" event="complete" />
+        <camunda:taskListener class="root.demo.handlers.EditPaperDataHandler" event="complete" />
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_10eb318</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1taevv4</bpmn:outgoing>
@@ -310,7 +310,7 @@
     <bpmn:boundaryEvent id="IntermediateThrowEvent_0futdia" attachedToRef="previewCommentsAndResponseAuthor">
       <bpmn:outgoing>SequenceFlow_1rpospb</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0j15ji2">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT15M</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT25M</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1rpospb" name="rad odbijen" sourceRef="IntermediateThrowEvent_0futdia" targetRef="Task_1rj6zh0" />

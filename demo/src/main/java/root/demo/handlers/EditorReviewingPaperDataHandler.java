@@ -9,19 +9,24 @@ import org.springframework.stereotype.Service;
 
 import root.demo.entities.Paper;
 import root.demo.enums.PaperState;
+import root.demo.services.PaperService;
 
 @Service
 public class EditorReviewingPaperDataHandler implements TaskListener {
 	
 	@Autowired
 	RuntimeService runtimeService;
+	
+	@Autowired
+	PaperService paperService;
 
 	@Override
 	public void notify(DelegateTask delegateTask) {
 		System.out.println("EditorReviewingPaperDataHandler");
 
 			DelegateExecution delegateExecution = delegateTask.getExecution();
-			Paper paper = (Paper) runtimeService.getVariable(delegateExecution.getId(), "paper");
+			Long paperId = (Long) runtimeService.getVariable(delegateExecution.getId(), "paper");
+			Paper paper = paperService.getById(paperId);
 			boolean isThemeValid = (boolean) runtimeService.getVariable(delegateExecution.getId(), "radRelevantan");
 
 			if (isThemeValid) {
@@ -30,7 +35,6 @@ public class EditorReviewingPaperDataHandler implements TaskListener {
 				paper.setAccepted(false);
 			}
 		
-		delegateExecution.removeVariable("paper");
-		delegateExecution.setVariable("paper", paper);
+		paperService.save(paper);
 	}
 }

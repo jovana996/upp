@@ -39,7 +39,7 @@ public class Paper implements Serializable {
 	@Column
 	private String paperAbstract;
 	
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne( cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	private ScienceArea scienceArea;
 	
 	@Column
@@ -54,7 +54,7 @@ public class Paper implements Serializable {
 	@Column
 	private String doi;
 	
-	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne( cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	private User author;
 
 	public Paper() {

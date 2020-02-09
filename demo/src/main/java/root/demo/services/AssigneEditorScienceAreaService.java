@@ -15,7 +15,6 @@ public class AssigneEditorScienceAreaService implements JavaDelegate {
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO SET NA GLAVNOG URENIKA!!
 		String urednikNO = "demo";
-		Paper paper = (Paper) execution.getVariable("paper");
 		ScienceArea sa = (ScienceArea) execution.getVariable("scienceAreaPaper");
 		User user = sa.getEditor();
 		if (user != null && user.getActivatedAccount() != false) {

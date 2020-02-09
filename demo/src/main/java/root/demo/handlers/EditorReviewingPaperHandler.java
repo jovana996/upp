@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import root.demo.entities.Paper;
 import root.demo.enums.PaperState;
+import root.demo.services.PaperService;
 
 @Service
 public class EditorReviewingPaperHandler implements TaskListener{
@@ -16,11 +17,15 @@ public class EditorReviewingPaperHandler implements TaskListener{
     @Autowired
     RuntimeService runtimeService;
     
+	@Autowired
+	PaperService paperService;
+    
 	@Override
 	public void notify(DelegateTask delegateTask) {
 		
 	DelegateExecution delegateExecution = delegateTask.getExecution();
-	Paper paper = (Paper) runtimeService.getVariable(delegateExecution.getId(), "paper");
+	Long paperId = (Long) runtimeService.getVariable(delegateExecution.getId(), "paper");
+	Paper paper = paperService.getById(paperId);
 
     boolean decision = (boolean) runtimeService.getVariable(delegateExecution.getId(), "radDobroFormatiran");
 
@@ -30,8 +35,7 @@ public class EditorReviewingPaperHandler implements TaskListener{
            paper.setState(PaperState.APPLICATION_CORRECTION);
        }
        
-   	delegateExecution.removeVariable("paper");
-	delegateExecution.setVariable("paper", paper);
+   	paperService.save(paper);
 	}
 
 }

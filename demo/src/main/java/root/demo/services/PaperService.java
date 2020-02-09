@@ -16,5 +16,7 @@ public class PaperService {
 	public Paper save(Paper paper) {
 		return paperRepository.save(paper);
 	}
-
+	public Paper getById(Long id) {
+		return paperRepository.getOne(id);
+	}
 }

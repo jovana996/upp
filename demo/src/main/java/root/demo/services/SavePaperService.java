@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import root.demo.entities.Paper;
+import root.demo.entities.ScienceArea;
+import root.demo.enums.PaperState;
 
 @Service
 public class SavePaperService implements JavaDelegate {
@@ -22,10 +24,19 @@ public class SavePaperService implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution delegateExecution) throws Exception {
 
-		Paper paper = (Paper) runtimeService.getVariable(delegateExecution.getId(), "paper");
+		Long paperId = (Long) delegateExecution.getVariable("paper");
+		Paper paper = paperService.getById(paperId);
+		System.out.println(paper);
+		if(paper != null) {
 		paper.setDoi(UUID.randomUUID().toString());
+		paper.setAccepted(true);
+		paper.setState(PaperState.ACCEPTED);
+	/*	ScienceArea sa = (ScienceArea) delegateExecution.getVariable("scienceAreaPaper");
+		paper.setScienceArea(sa);
+		System.out.println(sa);*/
 		Paper savedPaper = paperService.save(paper);
 		System.out.println("CUVANJE TEKSTA!");
 		System.out.println(savedPaper);
+		}
 	}
 }

@@ -5,29 +5,35 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import root.demo.entities.Magazine;
 import root.demo.entities.Paper;
-import root.demo.enums.PaperState;
+import root.demo.entities.ScienceArea;
+import root.demo.services.PaperService;
 
+@Service
 public class FinalDecisionHandler implements TaskListener{
 
 	   @Autowired
 	    RuntimeService runtimeService;
+	   
+	   @Autowired
+	    PaperService paperService;
 
 	@Override
 	public void notify(DelegateTask delegateTask) {
 		System.out.println("FinalDecisionHandler");	
 		DelegateExecution execution = delegateTask.getExecution();
-		//Paper paper = (Paper) runtimeService.getVariable(execution.getId(), "paper");
+		Long paperId = (Long) runtimeService.getVariable(execution.getId(), "paper");
+		Paper paper = paperService.getById(paperId);
 		String finalDecision = runtimeService.getVariable(execution.getId(), "odluka2").toString();
 		System.out.println("Final decision "+finalDecision);
 		
 		if(finalDecision.equals("prihvati")) {
-			//paper.setAccepted(true);
+			paper.setAccepted(true);
 		}
-		execution.removeVariable("paper");
-		//execution.setVariable("paper", paper);
+		
+		paperService.save(paper);
 	}
 
 
