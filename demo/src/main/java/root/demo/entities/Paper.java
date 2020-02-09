@@ -1,15 +1,20 @@
 package root.demo.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import root.demo.enums.PaperState;
+
 @Entity
-public class Paper {
+public class Paper implements Serializable {
 	
 	@Id
 	@Column
@@ -34,14 +39,21 @@ public class Paper {
 	@Column
 	private String paperAbstract;
 	
-	@ManyToOne( cascade = CascadeType.ALL)
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private ScienceArea scienceArea;
 	
 	@Column
 	private String paper;
+	
+	@Column
+	private Boolean accepted;
+	
+	@Column
+	private PaperState state;
 
 	public Paper() {
 		super();
+		this.accepted = false;
 	}
 
 	public Paper(String title, String coAuthorName, String coAuthorEmail, String coAuthorAddress, String keyWords,
@@ -55,6 +67,7 @@ public class Paper {
 		this.paperAbstract = paperAbstract;
 		this.scienceArea = scienceArea;
 		this.paper = paper;
+		this.accepted = false;
 	}
 
 	public Long getId() {
@@ -128,7 +141,32 @@ public class Paper {
 	public void setPaper(String paper) {
 		this.paper = paper;
 	}
-	
+
+	public Boolean getAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(Boolean accepted) {
+		this.accepted = accepted;
+	}
+
+	public PaperState getState() {
+		return state;
+	}
+
+	public void setState(PaperState state) {
+		this.state = state;
+	}
+
+	@Override
+	public String toString() {
+		return "Paper [id=" + id + ", title=" + title + ", coAuthorName=" + coAuthorName + ", coAuthorEmail="
+				+ coAuthorEmail + ", coAuthorAddress=" + coAuthorAddress + ", keyWords=" + keyWords + ", paperAbstract="
+				+ paperAbstract +", paper=" + paper + ", accepted=" + accepted
+				+ ", state=" + state + "]";
+	}
+
+
 	
 
 }

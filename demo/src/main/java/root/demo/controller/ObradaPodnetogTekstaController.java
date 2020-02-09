@@ -8,6 +8,7 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.form.FormField;
 import org.camunda.bpm.engine.form.TaskFormData;
+import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +44,32 @@ public class ObradaPodnetogTekstaController {
 	
 	@GetMapping(path = "/get", produces = "application/json")
 	public @ResponseBody FormFieldsDto startProcess() {
+		
 		System.out.println("pocinje proces obrade podnetog texta ");
 		ProcessInstance pi = runtimeService.startProcessInstanceByKey("obradaPodnetogTeksta");
 		Task task = taskService.createTaskQuery().processInstanceId(pi.getId()).list().get(0);
 		TaskFormData tfd = formService.getTaskFormData(task.getId());
 		List<FormField> properties = tfd.getFormFields();
-
+		addInitUsers();
 		return new FormFieldsDto(task.getId(), pi.getId(), properties, task.getTaskDefinitionKey());
+	}
+	
+	private void addInitUsers() {
+		List<root.demo.entities.User> allUsers = userService.findAll();
+			if(allUsers.isEmpty() ) {
+			for(root.demo.entities.User u : allUsers) {
+				List<User> users = identityService.createUserQuery().userIdIn(u.getEmail()).list();
+				if(users.isEmpty()) {
+				User user = identityService.newUser(u.getUsername());
+				user.setEmail(u.getEmail());
+				user.setFirstName(u.getFirstName());
+				user.setLastName(u.getLastName());
+				user.setPassword(u.getPassword());
+				identityService.saveUser(user);
+				}
+			}
+		
+		}
+		
 	}
 }

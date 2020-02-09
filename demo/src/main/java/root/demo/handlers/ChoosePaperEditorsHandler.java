@@ -12,24 +12,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ChoosePaperEditorsHandler implements TaskListener{
+public class ChoosePaperEditorsHandler implements TaskListener {
 
-    @Autowired
-    RuntimeService runtimeService;
-	
+	@Autowired
+	RuntimeService runtimeService;
+
 	@Autowired
 	IdentityService identityService;
+
 	@Override
 	public void notify(DelegateTask delegateTask) {
-		  List<User> users = identityService.createUserQuery().userIdIn("pera", "mika", "zika").list();
-			
-		  users = identityService.createUserQuery().list();
-		  DelegateExecution execution = delegateTask.getExecution();
-	      //  String naslov = runtimeService.getVariable(delegateExecution.getId(), "naslov").toString();
+		DelegateExecution execution = delegateTask.getExecution();
+		String recezent1 = runtimeService.getVariable(execution.getId(), "recezent1").toString();
+		String recezent2 = runtimeService.getVariable(execution.getId(), "recezent2").toString();
 
-		 execution.setVariable("listaRecezenata", users);
-	    	System.out.println("ChoosePaperEditorsHandler");
-	
+		List<User> users = identityService.createUserQuery().userIdIn(recezent1, recezent2).list();
+		users = identityService.createUserQuery().list();
+		execution.setVariable("listaRecezenata", users);
+		System.out.println("ChoosePaperEditorsHandler");
+
 	}
 
 }

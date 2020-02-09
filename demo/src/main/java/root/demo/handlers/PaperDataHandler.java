@@ -37,7 +37,10 @@ public class PaperDataHandler implements TaskListener {
 		Paper paper = new Paper(title, coAuthorName, coAuthorEmail, coAuthorAddress, keyWords, paperAbstract, sa, paperText);
 		
 		execution.setVariable("paper", paper);
+		execution.setVariable("scienceAreaPaper", sa);
 		System.out.println("paper " + paper.getTitle());
+
+		System.out.println(sa);
 		System.out.println("PaperDataHandler");
 
 	}

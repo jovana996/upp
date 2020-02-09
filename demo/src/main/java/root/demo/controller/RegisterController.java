@@ -102,12 +102,11 @@ public class RegisterController {
 		Task task = tasks.get(0);
 		TaskFormData tfd = formService.getTaskFormData(task.getId());
 		List<FormField> properties = tfd.getFormFields();
-		List<root.demo.entities.User> reviewers  = new ArrayList<root.demo.entities.User>();
 		List<root.demo.entities.User> editors  = new ArrayList<root.demo.entities.User>();
 		
 		List<ScienceArea> scienceAreas  = new ArrayList<ScienceArea>();
 		List<Magazine> magazines  = new ArrayList<Magazine>();
-		reviewers= userService.findByRole(Role.REVIEWER);
+		
 		editors= userService.findByRole(Role.EDITOR);
 		scienceAreas = scienceAreaService.getAll();
 		magazines = magazineService.getAll();
@@ -119,12 +118,7 @@ public class RegisterController {
 			               values.put(user.getId().toString(),user.getFirstName()+" "+user.getLastName());
 			           }
 			       }
-			       if( field.getId().equals("recezent1") || field.getId().equals("recezent2")){
-			    	   Map<String, String> values = (Map<String, String>) field.getType().getInformation("values");
-			           for(root.demo.entities.User user  :  reviewers){
-			               values.put(user.getId().toString(),user.getFirstName()+" "+user.getLastName());
-			           }
-			       }
+			  
 			   }
 
 		}

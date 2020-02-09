@@ -24,6 +24,7 @@ public class SendMailService implements JavaDelegate{
 		
 		this.sendMessage(sendTo, subject,message);		
 	}
+	
 	@Async
 	public void sendMessage(String to, String subject, String message) {
 		
