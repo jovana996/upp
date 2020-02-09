@@ -9,7 +9,7 @@ public class SetTimeToReviewService implements JavaDelegate{
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		execution.setVariable("vremeRecenzije", "PT15M");
+		execution.setVariable("vremeRecenzije", "PT25M");
 		
 	}
 

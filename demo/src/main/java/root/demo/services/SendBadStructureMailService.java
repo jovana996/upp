@@ -21,7 +21,7 @@ public class SendBadStructureMailService implements JavaDelegate{
 		String message = "Struktura rada ne zadovoljava sve kriterijume."
 				+ " Rad je potrebno ispraviti u zadatom roku i ponovo poslati na recenziju."
 				+ "U slucaju isteka zadatog roka, rad ce biti odbijen.";
-		this.sendMessage("jo@mailinator.com", subject, message);
+		//this.sendMessage("jo@mailinator.com", subject, message);
 		System.out.println("SendBadStructureMailService");
 	}
 	@Async

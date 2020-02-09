@@ -20,7 +20,7 @@ public class SendRejectMailToAurthorService implements JavaDelegate {
 		String subject = "Prijavljeni rad - odluka";
 		String message = "Prijavljen je odbijen jer se smatra nerelevantnim!";
 
-		this.sendMessage("jo@mailinator.com", subject, message);
+		//this.sendMessage("jo@mailinator.com", subject, message);
 		System.out.println("SendMailToEditorAndAuthorService");
 	}
 

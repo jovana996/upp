@@ -20,7 +20,7 @@ public class SendMailToEditorAndAuthorService implements JavaDelegate {
 		String subject = "Prijavljen novi rad";
 		String message = "Prijavljen je novi rad za obradu!";
 
-		this.sendMessage(sendToEditor, subject, message);
+	//	this.sendMessage(sendToEditor, subject, message);
 		System.out.println("SendMailToEditorAndAuthorService");
 	}
 

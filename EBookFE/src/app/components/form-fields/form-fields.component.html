@@ -39,8 +39,8 @@
         <input type="text" name={{field.id}} ngModel  *ngIf="field.type.name=='string'" placeholder="{{field.defaultValue}}"  [readonly]="field.defaultValue" >
         <input type="checkbox" name={{field.id}} ngModel  *ngIf="field.type.name=='boolean'">
         <input type="number" name={{field.id}} ngModel  *ngIf="field.type.name=='long'" >
-        <select name="{{field.id}}" ngModel *ngIf="field.type.name=='enum'">
-          <option *ngFor="let val of enumValues.get(field.id).values" value={{val}}>
+        <select name="{{field.id}}" ngModel *ngIf="field.type.name=='enum'" >
+          <option *ngFor="let val of enumValues.get(field.id).values" value={{val}} [selected] = "val == field.defaultValue">
             {{field.type.values[val]}}
           </option>
         </select>

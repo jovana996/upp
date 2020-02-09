@@ -50,6 +50,12 @@ public class Paper implements Serializable {
 	
 	@Column
 	private PaperState state;
+	
+	@Column
+	private String doi;
+	
+	@ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private User author;
 
 	public Paper() {
 		super();
@@ -158,15 +164,27 @@ public class Paper implements Serializable {
 		this.state = state;
 	}
 
+	public User getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(User author) {
+		this.author = author;
+	}
+
+	public String getDoi() {
+		return doi;
+	}
+
+	public void setDoi(String doi) {
+		this.doi = doi;
+	}
+
 	@Override
 	public String toString() {
 		return "Paper [id=" + id + ", title=" + title + ", coAuthorName=" + coAuthorName + ", coAuthorEmail="
 				+ coAuthorEmail + ", coAuthorAddress=" + coAuthorAddress + ", keyWords=" + keyWords + ", paperAbstract="
-				+ paperAbstract +", paper=" + paper + ", accepted=" + accepted
-				+ ", state=" + state + "]";
+				+ paperAbstract + ", scienceArea=" + scienceArea + ", paper=" + paper + ", accepted=" + accepted
+				+ ", state=" + state + ", doi=" + doi + ", author=" + author + "]";
 	}
-
-
-	
-
 }
