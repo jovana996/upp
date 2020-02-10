@@ -6,14 +6,18 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import root.demo.entities.Magazine;
+import root.demo.repositories.SubscriptionRepository;
 import root.demo.services.MagazineService;
+import root.demo.services.SubscriptionService;
 
 @Service
-public class CheckIsMagazineOpenAccessHandler implements JavaDelegate {
+public class CheckSubscriptionHandler implements JavaDelegate {
 
 	@Autowired
 	MagazineService magazineService;
+	
+	@Autowired
+	SubscriptionService subscriptionService;
 	
 	@Autowired
 	RuntimeService runtimeService;
@@ -21,13 +25,13 @@ public class CheckIsMagazineOpenAccessHandler implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 	Long magazineId = (Long) execution.getVariable("magazine");
+	Boolean isPaid = subscriptionService.isPaidSubscription(1l, magazineId);
+	execution.setVariable("aktivnaClanarina", isPaid);
 	System.out.println(magazineId);
-	Magazine magazine = magazineService.getById(magazineId);
-		if(magazine != null) {
-		execution.setVariable("openAccess", magazine.getOpenAccess());
-		}
 
-		System.out.println("CheckIsMagazineOpenAccessHandler");
+		System.out.println("CheckSubscriptionHandler");
 	}
+
+
 
 }

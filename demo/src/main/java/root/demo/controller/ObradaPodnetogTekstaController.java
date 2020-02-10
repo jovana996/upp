@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import root.demo.model.FormFieldsDto;
-import root.demo.services.MagazineService;
-import root.demo.services.ScienceAreaService;
 import root.demo.services.UserService;
 
 @Controller

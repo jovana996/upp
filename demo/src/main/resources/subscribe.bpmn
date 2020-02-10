@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1gsvv1w" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.5.0">
-  <bpmn:process id="Process_04hczs9" isExecutable="true">
+  <bpmn:process id="subscribe" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>SequenceFlow_1dsc54h</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:serviceTask id="ServiceTask_1k8l13f" name="provera da li korisnik ima clanarinu" camunda:expression="${true}">
+    <bpmn:serviceTask id="ServiceTask_1k8l13f" name="provera da li korisnik ima clanarinu" camunda:class="root.demo.handlers.CheckSubscriptionHandler">
       <bpmn:incoming>SequenceFlow_1dsc54h</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0h8hu2w</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -17,12 +17,8 @@
     <bpmn:sequenceFlow id="SequenceFlow_1vh41al" name="nema clanarinu" sourceRef="ExclusiveGateway_0svwnym" targetRef="Task_1mwo565">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${aktivnaClanarina}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="SequenceFlow_0qng182" sourceRef="ServiceTask_0w8i96t" targetRef="ScriptTask_1ttzdx9" />
+    <bpmn:sequenceFlow id="SequenceFlow_0qng182" sourceRef="ServiceTask_0w8i96t" targetRef="EndEvent_0kzf3ie" />
     <bpmn:sequenceFlow id="SequenceFlow_0h8hu2w" sourceRef="ServiceTask_1k8l13f" targetRef="ExclusiveGateway_0svwnym" />
-    <bpmn:endEvent id="EndEvent_0kzf3ie">
-      <bpmn:incoming>SequenceFlow_1lc3jjq</bpmn:incoming>
-      <bpmn:incoming>SequenceFlow_18sf4qq</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1lc3jjq" name="ima clanarinu" sourceRef="ExclusiveGateway_0svwnym" targetRef="EndEvent_0kzf3ie" />
     <bpmn:sequenceFlow id="SequenceFlow_0jkt71c" sourceRef="Task_1mwo565" targetRef="ExclusiveGateway_0e5kbh3" />
     <bpmn:userTask id="Task_1mwo565" name="Da li korsinik zeli da uplati clanarinu">
@@ -39,29 +35,34 @@
       <bpmn:outgoing>SequenceFlow_0iv5ocv</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_0ido5nn</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="SequenceFlow_0iv5ocv" sourceRef="ExclusiveGateway_0e5kbh3" targetRef="ServiceTask_0w8i96t">
+    <bpmn:sequenceFlow id="SequenceFlow_0iv5ocv" name="da" sourceRef="ExclusiveGateway_0e5kbh3" targetRef="ServiceTask_0w8i96t">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${clanarina==true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:endEvent id="EndEvent_10qux83">
       <bpmn:incoming>SequenceFlow_0ido5nn</bpmn:incoming>
       <bpmn:errorEventDefinition id="ErrorEventDefinition_0070w3w" errorRef="Error_06rastu" />
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_0ido5nn" sourceRef="ExclusiveGateway_0e5kbh3" targetRef="EndEvent_10qux83">
+    <bpmn:sequenceFlow id="SequenceFlow_0ido5nn" name="ne" sourceRef="ExclusiveGateway_0e5kbh3" targetRef="EndEvent_10qux83">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${clanarina==false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:serviceTask id="ScriptTask_1ttzdx9" name="postavljanje promenljive za aktivnu clanarinu" camunda:class="root.demo.handlers.CheckIsMagazineOpenAccessHandler">
-      <bpmn:incoming>SequenceFlow_0qng182</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_18sf4qq</bpmn:outgoing>
-    </bpmn:serviceTask>
     <bpmn:userTask id="ServiceTask_0w8i96t" name="upalata clanarine">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="uplata" label="Uplata" type="string" />
+        </camunda:formData>
+        <camunda:taskListener class="root.demo.handlers.SubscribeHandler" event="complete" />
+      </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_0iv5ocv</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0qng182</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="SequenceFlow_18sf4qq" sourceRef="ScriptTask_1ttzdx9" targetRef="EndEvent_0kzf3ie" />
+    <bpmn:endEvent id="EndEvent_0kzf3ie">
+      <bpmn:incoming>SequenceFlow_1lc3jjq</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0qng182</bpmn:incoming>
+    </bpmn:endEvent>
   </bpmn:process>
   <bpmn:error id="Error_06rastu" name="Error_2jn9j7t" errorCode="400" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_04hczs9">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="subscribe">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="489" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -84,17 +85,15 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0qng182_di" bpmnElement="SequenceFlow_0qng182">
-        <di:waypoint x="960" y="270" />
-        <di:waypoint x="1050" y="270" />
+        <di:waypoint x="910" y="310" />
+        <di:waypoint x="910" y="450" />
+        <di:waypoint x="818" y="450" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0h8hu2w_di" bpmnElement="SequenceFlow_0h8hu2w">
         <di:waypoint x="390" y="507" />
         <di:waypoint x="510" y="507" />
         <di:waypoint x="510" y="475" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="EndEvent_0kzf3ie_di" bpmnElement="EndEvent_0kzf3ie">
-        <dc:Bounds x="782" y="432" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1lc3jjq_di" bpmnElement="SequenceFlow_1lc3jjq">
         <di:waypoint x="535" y="450" />
         <di:waypoint x="782" y="450" />
@@ -115,6 +114,9 @@
       <bpmndi:BPMNEdge id="SequenceFlow_0iv5ocv_di" bpmnElement="SequenceFlow_0iv5ocv">
         <di:waypoint x="765" y="270" />
         <di:waypoint x="860" y="270" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="806" y="252" width="13" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_11kuowx_di" bpmnElement="EndEvent_10qux83">
         <dc:Bounds x="722" y="82" width="36" height="36" />
@@ -122,18 +124,16 @@
       <bpmndi:BPMNEdge id="SequenceFlow_0ido5nn_di" bpmnElement="SequenceFlow_0ido5nn">
         <di:waypoint x="740" y="245" />
         <di:waypoint x="740" y="118" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="749" y="179" width="13" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="ServiceTask_09n4ugw_di" bpmnElement="ScriptTask_1ttzdx9">
-        <dc:Bounds x="1050" y="230" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="UserTask_0ns6zew_di" bpmnElement="ServiceTask_0w8i96t">
         <dc:Bounds x="860" y="230" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_18sf4qq_di" bpmnElement="SequenceFlow_18sf4qq">
-        <di:waypoint x="1100" y="310" />
-        <di:waypoint x="1100" y="450" />
-        <di:waypoint x="818" y="450" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_1ndhc9b_di" bpmnElement="EndEvent_0kzf3ie">
+        <dc:Bounds x="782" y="432" width="36" height="36" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
