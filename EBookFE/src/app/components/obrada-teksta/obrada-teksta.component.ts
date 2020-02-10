@@ -29,7 +29,9 @@ export class ObradaTekstaComponent implements OnInit {
 
   ngOnInit() {
     console.log('hello')
-     let x = this.textService.startProcess();
+    let user = JSON.parse(localStorage.getItem('user'));
+ 
+     let x = this.textService.startProcess(user.id);
     x.subscribe(
       res => {
         console.log(res)

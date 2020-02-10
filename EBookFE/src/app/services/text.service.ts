@@ -9,7 +9,7 @@ export class TextService {
 
   constructor(private httpClient: HttpClient) { }
 
-  startProcess(){
-    return this.httpClient.get('http://localhost:8080/text/get') as Observable<any>
+  startProcess(user){
+    return this.httpClient.post('http://localhost:8080/text/get', user) as Observable<any>
   }
 }

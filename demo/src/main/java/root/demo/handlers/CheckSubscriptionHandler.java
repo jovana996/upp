@@ -25,11 +25,14 @@ public class CheckSubscriptionHandler implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 	Long magazineId = (Long) execution.getVariable("magazine");
-	Boolean isPaid = subscriptionService.isPaidSubscription(1l, magazineId);
-	execution.setVariable("aktivnaClanarina", isPaid);
-	System.out.println(magazineId);
+	Long userId = (Long) execution.getVariable("user");
+	System.out.println("User id " + userId);
 
-		System.out.println("CheckSubscriptionHandler");
+	Boolean isPaid = subscriptionService.isPaidSubscription(userId, magazineId);
+	execution.setVariable("aktivnaClanarina", isPaid);
+	System.out.println(isPaid);
+
+	System.out.println("CheckSubscriptionHandler");
 	}
 
 

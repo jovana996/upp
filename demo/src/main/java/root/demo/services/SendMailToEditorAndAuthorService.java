@@ -8,19 +8,26 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import root.demo.entities.User;
+
 @Service
 public class SendMailToEditorAndAuthorService implements JavaDelegate {
 	@Autowired
 	private JavaMailSender javaMailSender;
 
+	@Autowired
+	UserService userService;
+
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
+
+		
 		String sendToEditor = execution.getVariable("glavniUrednik").toString();
-		//TODO : send to author
+	
 		String subject = "Prijavljen novi rad";
 		String message = "Prijavljen je novi rad za obradu!";
 
-	//	this.sendMessage(sendToEditor, subject, message);
+		// this.sendMessage(sendToEditor, subject, message);
 		System.out.println("SendMailToEditorAndAuthorService");
 	}
 

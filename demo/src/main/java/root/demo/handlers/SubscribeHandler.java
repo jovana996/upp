@@ -24,9 +24,11 @@ public class SubscribeHandler implements TaskListener {
 		try {
 			DelegateExecution execution = delegateTask.getExecution();
 			Long magazineId = (Long) execution.getVariable("magazine");
+			Long userId = (Long) execution.getVariable("user");
+			
 			execution.setVariable("aktivnaClanarina", true);
 			System.out.println(magazineId);
-			System.out.println("SubscribeHandler ");
+			System.out.println("SubscribeHandler");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

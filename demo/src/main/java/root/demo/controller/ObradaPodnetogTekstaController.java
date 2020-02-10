@@ -14,6 +14,9 @@ import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -40,12 +43,13 @@ public class ObradaPodnetogTekstaController {
 	@Autowired
 	UserService userService;
 	
-	@GetMapping(path = "/get", produces = "application/json")
-	public @ResponseBody FormFieldsDto startProcess() {
-		
+	@PostMapping(path = "/get", produces = "application/json")
+	public @ResponseBody FormFieldsDto startProcess(@RequestBody Long user) {
+		System.out.println(user);
 		System.out.println("pocinje proces obrade podnetog texta ");
 		ProcessInstance pi = runtimeService.startProcessInstanceByKey("obradaPodnetogTeksta");
 		Task task = taskService.createTaskQuery().processInstanceId(pi.getId()).list().get(0);
+		runtimeService.setVariable(pi.getId(), "user", user);
 		TaskFormData tfd = formService.getTaskFormData(task.getId());
 		List<FormField> properties = tfd.getFormFields();
 		addInitUsers();

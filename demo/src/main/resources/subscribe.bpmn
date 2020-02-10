@@ -15,11 +15,13 @@
       <bpmn:outgoing>SequenceFlow_1lc3jjq</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="SequenceFlow_1vh41al" name="nema clanarinu" sourceRef="ExclusiveGateway_0svwnym" targetRef="Task_1mwo565">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${aktivnaClanarina}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!aktivnaClanarina}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_0qng182" sourceRef="ServiceTask_0w8i96t" targetRef="EndEvent_0kzf3ie" />
     <bpmn:sequenceFlow id="SequenceFlow_0h8hu2w" sourceRef="ServiceTask_1k8l13f" targetRef="ExclusiveGateway_0svwnym" />
-    <bpmn:sequenceFlow id="SequenceFlow_1lc3jjq" name="ima clanarinu" sourceRef="ExclusiveGateway_0svwnym" targetRef="EndEvent_0kzf3ie" />
+    <bpmn:sequenceFlow id="SequenceFlow_1lc3jjq" name="ima clanarinu" sourceRef="ExclusiveGateway_0svwnym" targetRef="EndEvent_0kzf3ie">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${aktivnaClanarina}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_0jkt71c" sourceRef="Task_1mwo565" targetRef="ExclusiveGateway_0e5kbh3" />
     <bpmn:userTask id="Task_1mwo565" name="Da li korsinik zeli da uplati clanarinu">
       <bpmn:extensionElements>
