@@ -29,11 +29,18 @@ export class FormFieldsComponent implements OnInit {
   constructor(private userService: UserService, private repositoryService : RepositoryService, 
     private magazineService: MagazineService) {      
   this.magazinePreview = false;
+  this.enumValues = new Map<string,EnumValues>();
   }
 
   ngOnInit() {
     this.formFields  = [];
     this.magazinePreview = false;
+    this.enumValues = new Map<string,EnumValues>();
+    console.log('this.formFieldsDto')
+
+    console.log(this.formFieldsDto)
+
+
   }
 
   onSubmit(value, form){
@@ -202,19 +209,7 @@ export class FormFieldsComponent implements OnInit {
       res => {
         if(res){
         console.log(res)
-        this.formFieldsDto = res;
-        this.formFields = res.formFields;
-        this.processInstance = res.processInstanceId;
-        this.callFunction = res.taskDefinitionKey;
-        this.taskId = res.taskId;
-        this.formFields.forEach( (field) =>{
-          if( field.type.name=='enum'){
-          var enum1 = new EnumValues ;
-          enum1.name = field.id;
-          enum1.values =  Object.keys(field.type.values);
-          this.enumValues.set(field.id, enum1);
-          }
-        });
+      this.setData(res)
 
         if(this.callFunction == 'validateMagazine'){
        
@@ -242,6 +237,26 @@ export class FormFieldsComponent implements OnInit {
         console.log("Error occured");
       }
     );
+   }
+
+   setData(res){
+    this.formFieldsDto = res;
+    this.formFields = res.formFields;
+    this.processInstance = res.processInstanceId;
+    this.callFunction = res.taskDefinitionKey;
+    this.taskId = res.taskId;
+    this.formFields.forEach( (field) =>{
+      console.log('field')
+      console.log(field)
+      if( field.type.name=='enum'){
+      var enum1 = new EnumValues ;
+      enum1.name = field.id;
+      enum1.values =  Object.keys(field.type.values);
+      this.enumValues.set(field.id, enum1);
+      }
+    });
+
+
    }
 
 }

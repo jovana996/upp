@@ -29,8 +29,8 @@ public class ChoosePaperEditorsHandler implements TaskListener {
 		List<User> users = identityService.createUserQuery().userIdIn(recezent1, recezent2).list();
 		users = identityService.createUserQuery().list();
 		execution.setVariable("listaRecezenata", users);
-		System.out.println("ChoosePaperEditorsHandler");
 
+		System.out.println("ChoosePaperEditorsHandler");
 	}
 
 }

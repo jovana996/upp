@@ -25,7 +25,7 @@ public class ChooseMagazineHandler implements TaskListener {
 			DelegateExecution execution = delegateTask.getExecution();
 			String casopis = runtimeService.getVariable(execution.getId(), "casopis").toString();
 			Magazine magazine = magazineService.getById(Long.parseLong(casopis));
-			execution.setVariable("magazine", magazine);
+			execution.setVariable("magazine", magazine.getId());
 			System.out.println("caospiss " + magazine.getName());
 		} catch (Exception e) {
 			// TODO: handle exception

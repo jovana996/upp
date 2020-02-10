@@ -72,6 +72,12 @@ public class NewMagazineController {
 		return new FormFieldsDto(task.getId(), pi.getId(), properties, task.getTaskDefinitionKey());
 	}
 	
+	@GetMapping(path = "/getAll", produces = "application/json")
+	public @ResponseBody ResponseEntity getAll() {
+		List<MagazineDTO> magazines = magazineService.getAllDtos();
+		return new ResponseEntity(magazines, HttpStatus.OK);
+	}
+	
 	@PostMapping(path = "/post/{taskId}", produces = "application/json")
 	public @ResponseBody ResponseEntity post(@RequestBody List<FormSubmissionDto> dto, @PathVariable String taskId) {
 		HashMap<String, Object> map = this.mapListToDto(dto);

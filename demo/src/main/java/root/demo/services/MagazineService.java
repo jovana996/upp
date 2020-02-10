@@ -1,5 +1,6 @@
 package root.demo.services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import root.demo.entities.Magazine;
+import root.demo.model.MagazineDTO;
 import root.demo.repositories.MagazineRepository;
 
 @Service
@@ -40,6 +42,18 @@ public class MagazineService {
 	public List<Magazine> getAll() {
 		
 		return magazineRepository.findAll();
+	
+	}
+public List<MagazineDTO> getAllDtos() {
+		List<Magazine> all = magazineRepository.findAll();
+		
+		List<MagazineDTO> ret = new ArrayList<MagazineDTO>();
+		for(Magazine m : all) {
+			MagazineDTO dto = new MagazineDTO(m);
+			ret.add(dto);
+		}
+		
+		return ret;
 	
 	}
 }

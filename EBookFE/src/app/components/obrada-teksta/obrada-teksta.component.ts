@@ -28,17 +28,19 @@ export class ObradaTekstaComponent implements OnInit {
    }
 
   ngOnInit() {
+    console.log('hello')
      let x = this.textService.startProcess();
     x.subscribe(
       res => {
         console.log(res)
         this.formFieldsDto = res;
-        this.loadData();
+        this.form.setData(res);
       },
       err => {
         console.log("Error occured");
       }
     );
+
    }
   
 loadData(){

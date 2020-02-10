@@ -37,4 +37,7 @@ export class MagazineService {
     return this.httpClient.post("http://localhost:8080/magazine/chooseMagazine/".concat(taskId), magazine) as Observable<any>;
 
   }
+  getMagazines(){
+    return this.httpClient.get('http://localhost:8080/magazine/getAll') as Observable<any>
+  }
 }

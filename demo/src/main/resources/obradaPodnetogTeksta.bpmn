@@ -5,17 +5,6 @@
       <bpmn:outgoing>SequenceFlow_1px31x5</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1px31x5" sourceRef="StartEvent_1" targetRef="chooseMagazine" />
-    <bpmn:userTask id="chooseMagazine" name="odabir casopisa za objavu rada">
-      <bpmn:extensionElements>
-        <camunda:formData>
-          <camunda:formField id="casopis" label="Casopis za objavu rada" type="string" />
-        </camunda:formData>
-        <camunda:taskListener class="root.demo.handlers.ChooseMagazineHandler" event="complete" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>SequenceFlow_1px31x5</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_15srn6v</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:sequenceFlow id="SequenceFlow_15srn6v" sourceRef="chooseMagazine" targetRef="Task_1u1x8c2" />
     <bpmn:exclusiveGateway id="ExclusiveGateway_09cjzga">
       <bpmn:incoming>SequenceFlow_0nsn1wa</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0nirq0k</bpmn:outgoing>
@@ -398,6 +387,20 @@
       <bpmn:incoming>SequenceFlow_0xqtvu1</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_160q622</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:userTask id="chooseMagazine" name="odabir casopisa za objavu rada">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="casopis" label="Casopis za objavu rada" type="enum">
+            <camunda:value id="a" name="--Izaberite--" />
+          </camunda:formField>
+        </camunda:formData>
+        <camunda:taskListener class="root.demo.handlers.ChooseMagazineHandler" event="complete" />
+        <camunda:taskListener class="root.demo.handlers.ChooseSelectMagazineHandler" event="create" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1px31x5</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_15srn6v</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_15srn6v" sourceRef="chooseMagazine" targetRef="Task_1u1x8c2" />
   </bpmn:process>
   <bpmn:error id="Error_14kqijt" name="Error_2jn9j7t" errorCode="400" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -408,13 +411,6 @@
       <bpmndi:BPMNEdge id="SequenceFlow_1px31x5_di" bpmnElement="SequenceFlow_1px31x5">
         <di:waypoint x="188" y="748" />
         <di:waypoint x="270" y="748" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="UserTask_0wrcsl4_di" bpmnElement="chooseMagazine">
-        <dc:Bounds x="270" y="708" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_15srn6v_di" bpmnElement="SequenceFlow_15srn6v">
-        <di:waypoint x="370" y="748" />
-        <di:waypoint x="430" y="748" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ExclusiveGateway_09cjzga_di" bpmnElement="ExclusiveGateway_09cjzga" isMarkerVisible="true">
         <dc:Bounds x="615" y="723" width="50" height="50" />
@@ -763,6 +759,13 @@
       <bpmndi:BPMNShape id="ServiceTask_0czam99_di" bpmnElement="Task_1hsoqmw">
         <dc:Bounds x="4130" y="780" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_0wrcsl4_di" bpmnElement="chooseMagazine">
+        <dc:Bounds x="270" y="708" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_15srn6v_di" bpmnElement="SequenceFlow_15srn6v">
+        <di:waypoint x="370" y="748" />
+        <di:waypoint x="430" y="748" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

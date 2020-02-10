@@ -16,6 +16,7 @@ export class NewMagazineComponent implements OnInit {
   
   private repeated_password = "";
   private categories = [];
+
   private formFieldsDto;
   private formFields = [];
   private choosen_category = -1;
@@ -24,16 +25,23 @@ export class NewMagazineComponent implements OnInit {
   private tasks = [];
 
   constructor(private magazineService : MagazineService, private repositoryService : RepositoryService) {
-    
-
+    this.formFieldsDto = [];
+    this.enumValues = [];
+    console.log('hellooo');
    }
 
   ngOnInit() {
-     let x = this.magazineService.startProcess();
+    console.log('hellooo');
+    this.formFieldsDto = [];
+    this.enumValues = [];
+    let x = this.magazineService.startProcess();
+
     x.subscribe(
       res => {
         this.formFieldsDto = res;
         this.loadData();
+        console.log("after iniy this.formFieldsDto")
+        console.log(this.formFieldsDto)
       },
       err => {
         console.log("Error occured");
